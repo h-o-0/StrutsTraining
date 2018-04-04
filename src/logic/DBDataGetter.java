@@ -41,7 +41,7 @@ public class DBDataGetter {
 		List<UserData> userDataList = new ArrayList<UserData>();
 
 		while(queryResult.next()) {
-			userDataList.add(new UserData(queryResult.getString("id"), queryResult.getString("passward")));
+			userDataList.add(new UserData(queryResult.getString("id"), queryResult.getString("password")));
 
 		}
 
@@ -62,7 +62,7 @@ public class DBDataGetter {
 		ResultSet queryResult = statement.executeQuery();
 
 		if(queryResult.next()) {
-			return new UserData(queryResult.getString("id"), queryResult.getString("passward"));
+			return new UserData(queryResult.getString("id"), queryResult.getString("password"));
 		}
 
 		return new UserData(null, null);

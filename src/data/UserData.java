@@ -4,11 +4,11 @@ public class UserData {
 
 	String userid;
 
-	String passward;
+	String password;
 
 	public UserData(String userid, String passward) {
 		this.userid = userid;
-		this.passward = passward;
+		this.password = passward;
 	}
 
 	public String getUserid() {
@@ -20,16 +20,16 @@ public class UserData {
 	}
 
 	public String getPassward() {
-		return passward;
+		return password;
 	}
 
 	public void setPassward(String passward) {
-		this.passward = passward;
+		this.password = passward;
 	}
 
 	@Override
 	public String toString() {
-		return "UserData [userid=" + userid + ", passward=" + passward + "]";
+		return "UserData [userid=" + userid + ", passward=" + password + "]";
 	}
 
 
