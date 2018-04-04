@@ -12,8 +12,8 @@
       <forward name="fail" path="/view/sample/sendForm.jsp"/>
     </action>
     <action path="/login" forward="/login" type="main.action.LoginAction" input="error" name="LoginForm" scope="request" validate="true">
-      <forward name="success" path="/view/main/main.jsp" redirect="true"/>
-      <forward name="error" path="/view/main/login.jsp" redirect="true"/>
+      <forward name="success" path="/view/main/main.jsp"/>
+      <forward name="error" path="/view/main/login.jsp"/>
     </action>
   </action-mappings>
   <message-resources parameter="resources.message"/>

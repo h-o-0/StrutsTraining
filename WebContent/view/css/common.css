@@ -8,3 +8,7 @@
 input {
 	margin-bottom:15px;
 }
+
+.error {
+	color:#f00;
+}

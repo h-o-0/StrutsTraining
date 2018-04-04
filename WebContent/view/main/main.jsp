@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div id="wrapper">
-
+		<p>メインページ</p>
 	</div>
 </body>
 </html>
