@@ -12,10 +12,14 @@
 	<div id="wrapper">
 		<h3>PE本棚管理システム</h3>
 		<html:form action="/login" focus="userId">
-			ユーザーID <html:errors property="userId" /><br>
-			<html:text property="userId" size="50" /><br>
-			パスワード <html:errors property="password" /><br>
-			<html:password property="password" size="50" /><br>
+			<div class="inputWrapper">
+				ユーザーID <html:errors property="userId" /><br>
+				<html:text property="userId" />
+			</div>
+			<div class="inputWrapper">
+				パスワード <html:errors property="password" /><br>
+				<html:password property="password" /><br>
+			</div>
 			<html:submit property="submit" value="ログイン" />
 		</html:form>
 	</div>

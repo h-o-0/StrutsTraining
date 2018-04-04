@@ -5,7 +5,16 @@
 	margin:auto;
 }
 
-input {
+input:not([type=button]):not([type=submit]){
+	width:300px;
+}
+
+td {
+	vertical-align:top;
+	line-height:1.2
+}
+
+.inputWrapper {
 	margin-bottom:15px;
 }
 

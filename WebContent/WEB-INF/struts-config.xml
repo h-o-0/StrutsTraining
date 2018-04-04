@@ -4,6 +4,7 @@
   <form-beans>
     <form-bean name="FormBeanForm" type="sample.FormBeanForm" />
     <form-bean name="LoginForm" type="main.form.LoginForm" />
+    <form-bean name="AddForm" type="main.form.AddForm" />
   </form-beans>
 
   <action-mappings>
@@ -12,8 +13,12 @@
       <forward name="fail" path="/view/sample/sendForm.jsp"/>
     </action>
     <action path="/login" forward="/login" type="main.action.LoginAction" input="error" name="LoginForm" scope="request" validate="true">
-      <forward name="success" path="/view/main/main.jsp"/>
+      <forward name="success" path="/view/main/main.jsp" redirect="true"/>
       <forward name="error" path="/view/main/login.jsp"/>
+    </action>
+    <action path="/add" forward="/add" type="main.action.AddAction" input="error" name="AddForm" scope="request" validate="true">
+      <forward name="success" path="/view/main/add.jsp"/>
+      <forward name="error" path="/view/main/add.jsp"/>
     </action>
   </action-mappings>
   <message-resources parameter="resources.message"/>
