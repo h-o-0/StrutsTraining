@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.struts.action.ActionForm;
 
-public class AddForm extends ActionForm {
+public class EditForm extends ActionForm {
 
 	private List<String> titleList = new ArrayList<String>(Arrays.asList("はじめの一歩","働きマン"));
 	private String title;
@@ -16,8 +16,6 @@ public class AddForm extends ActionForm {
 	private String publisher;
 	private List<String> authorList = new ArrayList<String>(Arrays.asList("安野モヨコ","森川ジョージ"));
 	private String author;
-	private boolean noError;
-
 	public List<String> getTitleList() {
 		return titleList;
 	}
@@ -66,11 +64,6 @@ public class AddForm extends ActionForm {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public boolean getNoError() {
-		return noError;
-	}
-	public void setNoError(boolean noError) {
-		this.noError = noError;
-	}
+
 
 }

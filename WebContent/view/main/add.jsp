@@ -7,13 +7,13 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="/StrutsTest/view/css/common.css">
+	<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/view/css/common.css">
 	<title>追加画面</title>
 </head>
 <body>
 	<div id="wrapper">
 		<h3>追加</h3>
-		<html:form action="/add" focus="title">
+		<html:form action="/add?method=validate" focus="title">
 			<table>
 				<tr>
 					<td></td>
@@ -79,10 +79,34 @@
 				</tr>
 			</table>
 			<div class="btnWrapper">
-				<html:button property="bt" value="戻る" onclick="javascript:location.href='/StrutsTest/view/main/main.jsp'" />
-				<html:submit property="submit" value="登録" />
+				<html:button property="toMain" value="戻る" />
+				<html:submit property="submitBtn" value="登録" />
 			</div>
 		</html:form>
 	</div>
+
+	<script type="text/javascript">
+	(function(){
+
+		document.getElementsByName('toMain')[0].addEventListener('click', function(){
+			var mainUrl = '<%= request.getContextPath() %>/view/main/main.jsp';
+			location.href = mainUrl;
+		});
+
+		var noError = <%= request.getAttribute("noError") %>;
+		var registMsg = '確認用ポップアップ';
+		if(noError == 'true'){
+			document.AddForm.action='<%= request.getContextPath() %>/add.do?method=regist';
+			if(window.confirm(registMsg)){
+				//登録処理
+				document.AddForm.submit();
+				document.AddForm.action='<%= request.getContextPath() %>/add.do?method=validate';
+			}else{
+				//キャンセル
+				document.AddForm.action='<%= request.getContextPath() %>/add.do?method=validate';
+			}
+		}
+	}).call();
+	</script>
 </body>
 </html>

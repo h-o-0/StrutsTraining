@@ -5,26 +5,22 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.actions.DispatchAction;
 
-import main.form.AddForm;
-
-public class AddAction extends DispatchAction {
-	//画面内 登録ボタンクリック時：入力チェック
-	public ActionForward validate(ActionMapping mapping,
+public class EditAction extends Action {
+	public ActionForward execute(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
 			HttpServletResponse res) {
 
 		String result = "success";
-		ActionMessages errors = new ActionMessages();
 
-		AddForm addForm = (AddForm)form;
+		ActionMessages errors = new ActionMessages();
 
 		String title = req.getParameter("title");
 		String volume = req.getParameter("volume");
@@ -56,27 +52,7 @@ public class AddAction extends DispatchAction {
 		req.setAttribute("publisher", req.getParameter("publisher"));
 		req.setAttribute("author", req.getParameter("author"));
 
-		if(result.equals("success")) {
-			req.setAttribute("noError","true");
-		}else {
-			req.setAttribute("noError","false");
-		}
-
 		saveErrors(req, errors);
-		return (mapping.findForward(result));
-	}
-
-
-	//登録確認ポップアップ 登録ボタンクリック時：登録処理
-	public ActionForward regist(ActionMapping mapping,
-			ActionForm form,
-			HttpServletRequest req,
-			HttpServletResponse res) {
-
-		String result = "success";
-
-		//登録処理
-
 		return (mapping.findForward(result));
 	}
 
