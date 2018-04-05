@@ -22,25 +22,35 @@ public class AddAction extends Action {
 
 		ActionMessages errors = new ActionMessages();
 
-		if(req.getParameter("title").isEmpty()) {
+		String title = req.getParameter("title");
+		String volume = req.getParameter("volume");
+		String publisher = req.getParameter("publisher");
+		String author = req.getParameter("author");
+
+		if(title.isEmpty()) {
 			errors.add("title",new ActionMessage("errors.required","タイトル"));
 			result = "error";
 		}
-		if(req.getParameter("volume").isEmpty()) {
+		if(volume.isEmpty()) {
 			errors.add("volume",new ActionMessage("errors.required","巻"));
 			result = "error";
-		}else if(!volumeCheck(req.getParameter("volume"))) {
+		}else if(!volumeCheck(volume)) {
 			errors.add("volume",new ActionMessage("errors.volume.format"));
 			result = "error";
 		}
-		if(req.getParameter("publisher").isEmpty()) {
+		if(publisher.isEmpty()) {
 			errors.add("publisher",new ActionMessage("errors.required","出版社"));
 			result = "error";
 		}
-		if(req.getParameter("author").isEmpty()) {
+		if(author.isEmpty()) {
 			errors.add("author",new ActionMessage("errors.required","著者"));
 			result = "error";
 		}
+
+		req.setAttribute("title", req.getParameter("title"));
+		req.setAttribute("volume", req.getParameter("volume"));
+		req.setAttribute("publisher", req.getParameter("publisher"));
+		req.setAttribute("author", req.getParameter("author"));
 
 		saveErrors(req, errors);
 		return (mapping.findForward(result));

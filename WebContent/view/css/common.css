@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 #wrapper {
-	width:980px;
+	width:640px;
 	margin:auto;
 }
 
@@ -16,6 +16,10 @@ td {
 
 .inputWrapper {
 	margin-bottom:15px;
+}
+
+.btnWrapper > input:last-child {
+	float:right;
 }
 
 .error {
