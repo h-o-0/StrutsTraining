@@ -9,9 +9,33 @@ input:not([type=button]):not([type=submit]):not([type=checkbox]){
 	width:300px;
 }
 
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+}
+
 td {
 	vertical-align:top;
-	line-height:1.2
+	line-height:1.5em
+}
+
+#searchResultWrapper {
+	margin:30px 0px;
+	width:100%;
+}
+
+#searchResultWrapper table{
+	width:100%;
+}
+
+#searchResultWrapper th {
+	background:#b8cce4;
+}
+
+#searchResultWrapper th,
+#searchResultWrapper td {
+	border:1px solid #333;
+	vertical-align:middle;
 }
 
 .inputWrapper {

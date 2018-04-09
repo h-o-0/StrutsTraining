@@ -14,32 +14,74 @@
 <body>
 	<div id="wrapper">
 		<h3>PE本棚管理システム</h3>
-		<div id="searchForm">
+		<html:form action="/search">
+		<div id="searchFormWrapper">
+			<html:select property="searchCategory" value="title">
+				<html:option value="title">タイトル</html:option>
+				<html:option value="publisher">出版社</html:option>
+				<html:option value="author">著者</html:option>
+			</html:select>
+
+			<html:text property="searchWord"/>
+			<html:submit property="searchBtn" value="検索" />
 		</div>
 		<div id="searchResultWrapper">
-				<input type="checkbox" id="copyData" /><label for="copyData">チェック付ける</label>
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th>タイトル</th>
+						<th>出版社</th>
+						<th>著者</th>
+						<th>貸出状態</th>
+					</tr>
+				</thead>
+				<tbody>
+					<logic:iterate id="libraryList" name="SearchForm" property="libraryList">
+						<tr>
+							<td align="center"><html:checkbox property="selectBook"/></td>
+							<td class="title"><bean:write name="libraryList" property="title"/></td>
+							<td class="publisher"><bean:write name="libraryList" property="publisher"/></td>
+							<td class="author"><bean:write name="libraryList" property="author"/></td>
+							<td align="center"><html:link action="/detail">貸出状態</html:link></td>
+						</tr>
+					</logic:iterate>
+				</tbody>
+			</table>
 		</div>
+		</html:form>
 		<div id="btnWrapper">
 			<html:form action="/add">
 				<html:hidden property="title" />
 				<html:hidden property="volume" />
 				<html:hidden property="publisher" />
 				<html:hidden property="author" />
-				<html:hidden property="copyData" />
-				<html:submit property="submitBtn" styleId="addBtn" value="追加" />
+				<html:hidden property="selectBook" />
+				<html:submit property="addBtn" value="追加" />
 			</html:form>
 		</div>
 	</div>
 
 	<script type="text/javascript">
 	$(function(){
-		$('#addBtn').click(function(){
-			if($('#copyData').prop('checked')){
-				$('[name="title"]').val('テスト');
-				$('[name="volume"]').val('1');
-				$('[name="publisher"]').val('テスト社');
-				$('[name="author"]').val('テステス子');
-				$('[name="copyData"]').val('true');
+		//チェックボックスを択一にする
+		$('#searchResultWrapper').find('[name="selectBook"]').click(function(){
+			if($(this).prop('checked')){
+				$('[name="selectBook"]').prop('checked',false);
+				$(this).prop('checked',true);
+			}
+		});
+
+		$('[name="addBtn"]').click(function(){
+			for(var i=0; i<document.SearchForm.selectBook.length; i++){
+				if(document.SearchForm.selectBook[i].checked){
+					$('[name="title"]').val($('td.title:eq('+i+')').text());
+					$('[name="volume"]').val('1');
+					$('[name="publisher"]').val($('.publisher:eq('+i+')').text());
+					$('[name="author"]').val($('.author:eq('+i+')').text());
+					$('[name="selectBook"][type="hidden"]').val('true');
+					break;
+				}
 			}
 		});
 	});

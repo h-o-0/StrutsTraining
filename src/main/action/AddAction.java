@@ -55,11 +55,6 @@ public class AddAction extends DispatchAction {
 			result = "error";
 		}
 
-		req.setAttribute("title", req.getParameter("title"));
-		req.setAttribute("volume", req.getParameter("volume"));
-		req.setAttribute("publisher", req.getParameter("publisher"));
-		req.setAttribute("author", req.getParameter("author"));
-
 		if(result.equals("success")) {
 			req.setAttribute("noError","true");
 		}else {

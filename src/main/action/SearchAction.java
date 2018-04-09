@@ -3,17 +3,18 @@ package main.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.actions.DispatchAction;
 
-public class DetailAction extends DispatchAction {
+public class SearchAction extends Action {
 	//デフォルト
-	public ActionForward unspecified(ActionMapping mapping,
+	public ActionForward execute(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
 			HttpServletResponse res) {
 		return (mapping.findForward("success"));
 	}
+
 }

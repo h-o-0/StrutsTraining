@@ -29,6 +29,7 @@
 								<option value="<bean:write name="titleList" />" />
 							</logic:iterate>
 						</dataList>
+						<html:hidden property="title" styleClass="title" />
 					</td>
 				</tr>
 				<tr>
@@ -61,6 +62,7 @@
 								<option value="<bean:write name="publisherList" />" />
 							</logic:iterate>
 						</dataList>
+						<html:hidden property="publisher" styleClass="publisher" />
 					</td>
 				</tr>
 				<tr>
@@ -76,11 +78,12 @@
 								<option value="<bean:write name="authorList" />" />
 							</logic:iterate>
 						</dataList>
+						<html:hidden property="author" styleClass="author" />
 					</td>
 				</tr>
 			</table>
 			<div class="btnWrapper">
-				<html:hidden property="copyData" />
+				<html:hidden property="selectBook" />
 				<html:button property="toMain" value="戻る" />
 				<html:submit property="submitBtn" value="登録" />
 			</div>
@@ -89,10 +92,14 @@
 
 	<script type="text/javascript">
 	$(function(){
-		if($('[name="copyData"]').val() == 'true'){
-			$('[name="title"]').prop('disabled',true);
-			$('[name="publisher"]').prop('disabled',true);
-			$('[name="author"]').prop('disabled',true);
+		if($('[name="selectBook"]').val() == 'true'){
+			$('input[name="title"]:not([type="hidden"])').prop('disabled',true);
+			$('[name="publisher"]:not([type="hidden"])').prop('disabled',true);
+			$('[name="author"]:not([type="hidden"])').prop('disabled',true);
+		}else{
+			$('input[name="title"][type="hidden"]').prop('disabled',true);
+			$('[name="publisher"][type="hidden"]').prop('disabled',true);
+			$('[name="author"][type="hidden"]').prop('disabled',true);
 		}
 
 		$('[name="toMain"]').on('click', function(){
