@@ -12,8 +12,8 @@
 </head>
 <body>
 	<div id="wrapper">
-		<h3>編集</h3>
-		<html:form action="/edit" focus="title">
+		<h3>書籍情報編集</h3>
+		<html:form action="/edit?method=validate" focus="title">
 			<table>
 				<tr>
 					<td></td>
@@ -79,10 +79,39 @@
 				</tr>
 			</table>
 			<div class="btnWrapper">
-				<html:button property="bt" value="戻る" onclick="javascript:location.href='<%= request.getContextPath() %>/view/main/main.jsp'" />
-				<html:submit property="submit" value="登録" />
+				<html:button property="toMain" value="戻る" />
+				<html:submit property="submitBtn" value="登録" />
 			</div>
 		</html:form>
 	</div>
+
+	<script type="text/javascript">
+	(function(){
+
+		document.getElementsByName('toMain')[0].addEventListener('click', function(){
+			var mainUrl = '<%= request.getContextPath() %>/view/main/main.jsp';
+			location.href = mainUrl;
+		});
+
+		var noError = <%= request.getAttribute("noError") %>;
+		var registComplete = <%= request.getAttribute("registComplete") %>;
+
+		if(noError && !registComplete){
+			var registMsg = '確認用ポップアップ';
+			document.EditForm.action = '<%= request.getContextPath() %>/edit.do?method=regist';
+			if(window.confirm(registMsg)){
+				//登録処理
+				document.EditForm.submit();
+				document.EditForm.action='<%= request.getContextPath() %>/edit.do?method=validate';
+			}else{
+				//キャンセル
+				document.EditForm.action='<%= request.getContextPath() %>/edit.do?method=validate';
+			}
+		}
+		if(noError && registComplete){
+			alert('処理が終了しました。');
+		}
+	}).call();
+	</script>
 </body>
 </html>

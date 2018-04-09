@@ -8,11 +8,12 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/view/css/common.css">
+	<script src="<%= request.getContextPath() %>/view/js/jquery-3.3.1.min.js"></script>
 	<title>追加画面</title>
 </head>
 <body>
 	<div id="wrapper">
-		<h3>追加</h3>
+		<h3>書籍追加</h3>
 		<html:form action="/add?method=validate" focus="title">
 			<table>
 				<tr>
@@ -79,6 +80,7 @@
 				</tr>
 			</table>
 			<div class="btnWrapper">
+				<html:hidden property="copyData" />
 				<html:button property="toMain" value="戻る" />
 				<html:submit property="submitBtn" value="登録" />
 			</div>
@@ -86,17 +88,23 @@
 	</div>
 
 	<script type="text/javascript">
-	(function(){
+	$(function(){
+		if($('[name="copyData"]').val() == 'true'){
+			$('[name="title"]').prop('disabled',true);
+			$('[name="publisher"]').prop('disabled',true);
+			$('[name="author"]').prop('disabled',true);
+		}
 
-		document.getElementsByName('toMain')[0].addEventListener('click', function(){
-			var mainUrl = '<%= request.getContextPath() %>/view/main/main.jsp';
-			location.href = mainUrl;
+		$('[name="toMain"]').on('click', function(){
+			location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
 		});
 
 		var noError = <%= request.getAttribute("noError") %>;
-		var registMsg = '確認用ポップアップ';
-		if(noError == 'true'){
-			document.AddForm.action='<%= request.getContextPath() %>/add.do?method=regist';
+		var registComplete = <%= request.getAttribute("registComplete") %>;
+
+		if(noError && !registComplete){
+			var registMsg = '確認用ポップアップ';
+			document.AddForm.action = '<%= request.getContextPath() %>/add.do?method=regist';
 			if(window.confirm(registMsg)){
 				//登録処理
 				document.AddForm.submit();
@@ -106,7 +114,10 @@
 				document.AddForm.action='<%= request.getContextPath() %>/add.do?method=validate';
 			}
 		}
-	}).call();
+		if(noError && registComplete){
+			alert('処理が終了しました。');
+		}
+	});
 	</script>
 </body>
 </html>

@@ -16,7 +16,7 @@ public class AddForm extends ActionForm {
 	private String publisher;
 	private List<String> authorList = new ArrayList<String>(Arrays.asList("安野モヨコ","森川ジョージ"));
 	private String author;
-	private boolean noError;
+	private boolean copyData;
 
 	public List<String> getTitleList() {
 		return titleList;
@@ -66,11 +66,11 @@ public class AddForm extends ActionForm {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public boolean getNoError() {
-		return noError;
+	public boolean getCopyData() {
+		return copyData;
 	}
-	public void setNoError(boolean noError) {
-		this.noError = noError;
+	public void setCopyData(boolean copyData) {
+		this.copyData = copyData;
 	}
 
 }

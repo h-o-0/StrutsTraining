@@ -6,6 +6,7 @@
     <form-bean name="LoginForm" type="main.form.LoginForm" />
     <form-bean name="AddForm" type="main.form.AddForm" />
     <form-bean name="EditForm" type="main.form.EditForm" />
+    <form-bean name="DetailForm" type="main.form.DetailForm" />
   </form-beans>
 
   <action-mappings>
@@ -24,6 +25,10 @@
     <action path="/edit" forward="/edit" type="main.action.EditAction" input="error" name="EditForm" scope="request" validate="true">
       <forward name="success" path="/view/main/edit.jsp"/>
       <forward name="error" path="/view/main/edit.jsp"/>
+    </action>
+    <action path="/detail" forward="/detail" type="main.action.DetailAction" input="error" name="DetailForm" scope="request" validate="true">
+      <forward name="success" path="/view/main/detail.jsp"/>
+      <forward name="error" path="/view/main/detail.jsp"/>
     </action>
   </action-mappings>
   <message-resources parameter="resources.message"/>

@@ -5,7 +5,7 @@
 	margin:auto;
 }
 
-input:not([type=button]):not([type=submit]){
+input:not([type=button]):not([type=submit]):not([type=checkbox]){
 	width:300px;
 }
 

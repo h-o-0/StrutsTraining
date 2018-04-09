@@ -12,9 +12,15 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
-import main.form.AddForm;
-
 public class AddAction extends DispatchAction {
+	//デフォルト
+	public ActionForward unspecified(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) {
+		return (mapping.findForward("success"));
+	}
+
 	//画面内 登録ボタンクリック時：入力チェック
 	public ActionForward validate(ActionMapping mapping,
 			ActionForm form,
@@ -23,8 +29,6 @@ public class AddAction extends DispatchAction {
 
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
-
-		AddForm addForm = (AddForm)form;
 
 		String title = req.getParameter("title");
 		String volume = req.getParameter("volume");
