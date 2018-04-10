@@ -72,13 +72,9 @@ public class DBOperationLogic {
 	 */
 	public static void addLibrary(Library addData ,String volume) throws SQLException {
 
-		Library data = (Library)sqlMap.queryForObject("getLibrary", addData.getTitle());
+		sqlMap.insert("insertLibrary", addData);
 
-		if(data.getTitle() == null) {
-			sqlMap.insert("insertLibrary", addData);
-		}
-
-		addStock(addData.getTitle() ,volume);
+		addStock(addData.getTitle() ,"1");
 
 	}
 
