@@ -50,14 +50,14 @@
 			</table>
 		</div>
 		</html:form>
-		<div id="btnWrapper">
+		<div class="btnWrapper">
 			<html:form action="/add">
 				<html:hidden property="title" />
 				<html:hidden property="volume" />
 				<html:hidden property="publisher" />
 				<html:hidden property="author" />
 				<html:hidden property="selectBook" />
-				<html:submit property="addBtn" value="追加" />
+				<html:submit property="addBtn" value="追加" styleClass="rightBtn" />
 			</html:form>
 		</div>
 	</div>

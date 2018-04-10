@@ -85,7 +85,7 @@
 			<div class="btnWrapper">
 				<html:hidden property="selectBook" />
 				<html:button property="toMain" value="戻る" />
-				<html:submit property="submitBtn" value="登録" />
+				<html:submit property="submitBtn" value="登録" styleClass="rightBtn" />
 			</div>
 		</html:form>
 	</div>

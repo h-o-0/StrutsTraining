@@ -32,7 +32,8 @@
       <forward name="error" path="/view/main/main.jsp"/>
     </action>
     <action path="/detail" forward="/detail" type="main.action.DetailAction" input="error" name="DetailForm" scope="request" parameter="method">
-      <forward name="success" path="/view/main/detail.jsp"/>
+      <forward name="success" path="/view/main/main.jsp" redirect="true"/>
+      <forward name="detail" path="/view/main/detail.jsp"/>
       <forward name="error" path="/view/main/detail.jsp"/>
     </action>
   </action-mappings>
