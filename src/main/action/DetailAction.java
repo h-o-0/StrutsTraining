@@ -36,7 +36,7 @@ public class DetailAction extends DispatchAction {
 		}
 
 		detailForm.setStockList(stockList);
-		detailForm.setTitle("ドラゴンボール");
+		detailForm.setTitle(req.getParameter("title"));
 
 		return (mapping.findForward("detail"));
 	}
@@ -71,6 +71,7 @@ public class DetailAction extends DispatchAction {
 
 			//削除処理
 
+			detailForm.setTitle(req.getParameter("title"));
 			saveErrors(req, errors);
 
 			return (mapping.findForward(result));

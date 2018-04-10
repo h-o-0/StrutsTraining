@@ -43,7 +43,7 @@
 							<td class="title"><bean:write name="libraryList" property="title"/></td>
 							<td class="publisher"><bean:write name="libraryList" property="publisher"/></td>
 							<td class="author"><bean:write name="libraryList" property="author"/></td>
-							<td align="center"><html:link action="/detail">貸出状態</html:link></td>
+							<td align="center"><html:link action="/detail" paramName="libraryList" paramId="title" paramProperty="title">貸出状態</html:link></td>
 						</tr>
 					</logic:iterate>
 				</tbody>

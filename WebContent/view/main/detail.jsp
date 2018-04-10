@@ -44,6 +44,7 @@
 		</div>
 		<div class="btnWrapper">
 			<html:hidden property="selectList"/>
+			<html:hidden property="title"/>
 			<html:submit property="deleteBtn" value="削除" />
 			<html:submit property="lendBtn" value="貸出/返却" styleClass="rightBtn" />
 		</div>
