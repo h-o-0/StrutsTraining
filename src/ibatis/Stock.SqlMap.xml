@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+          PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+          "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="Stock">
+    <!-- SELECT -->
+
+	<!-- resultMapを記述してIBATISの機能でマッピングする方法DBに依存しない記述のテスト -->
+	<!-- タイトルを指定し、そのタイトルの全データを取得します -->
+    <resultMap id="stockmap" class="ibatis.dto.Stock">
+	    <result column="TITLE" property="title"/>
+	    <result column="VOLUME" property="volume"/>
+	    <result column="STATUS" property="status"/>
+	</resultMap>
+
+	<select id="getStockDataEachTitle" parameterClass="String"  resultMap="stockmap">
+    	SELECT * FROM pelibrary.userdata WHERE TITLE = #VALUE#
+	</select>
+
+    <!-- UPDATE -->
+
+    <!-- タイトル、巻を指定し、貸出中状態に変更します -->
+    <update id="updateStatusOnLoan" parameterClass="ibatis.dto.Stock">
+        UPDATE pelibrary.stock
+        SET STATUS = 1
+        WHERE TITLE = #title# AND VOLUME = #volume#
+    </update>
+
+	 <!-- タイトル、巻を指定し、貸出可能状態に変更します -->
+    <update id="updateStatusLendable" parameterClass="String">
+        UPDATE pelibrary.stock
+        SET STATUS = 0
+        WHERE TITLE = #title# AND VOLUME = #volume#
+    </update>
+
+    <!-- DELETE -->
+    <!-- タイトル、巻を指定し、物理削除します -->
+    <delete id="deleteStock" parameterClass="String">
+        DELETE
+        FROM pelibrary.stock
+        WHERE TITLE = #title# AND VOLUME = #volume#
+    </delete>
+
+    <!-- INSERT -->
+    <insert id="insertStock" parameterClass="ibatis.dto.Stock">
+        INSERT INTO pelibrary.stock (
+            TITLE,
+            VOLUME,
+            STATUS
+        ) VALUES (
+            #title#,
+            #volume#,
+            0
+        )
+    </insert>
+</sqlMap>

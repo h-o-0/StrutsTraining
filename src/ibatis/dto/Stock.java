@@ -12,6 +12,10 @@ public class Stock {
 
     }
 
+    public Stock(String title, String volume) {
+		this(title,volume,0);
+	}
+
 	public Stock(String title, String volume, int status) {
 		this.title = title;
 		this.volume = volume;

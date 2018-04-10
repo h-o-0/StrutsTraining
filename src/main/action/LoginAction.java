@@ -13,8 +13,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import data.UserData;
-import logic.DBDataGetter;
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import ibatis.MyAppSqlConfig;
+import ibatis.dto.User;
 
 public class LoginAction extends Action {
 	public ActionForward execute(ActionMapping mapping,
@@ -26,9 +28,10 @@ public class LoginAction extends Action {
 
 		ActionMessages errors = new ActionMessages();
 
-		DBDataGetter getter = new DBDataGetter();
+		// ibatis
+		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		UserData dbData = getter.getUserData(req.getParameter("userId"));
+		User user = (User) sqlMap.queryForObject("getUser", "testuser");
 
 		if(req.getParameter("userId").isEmpty()) {
 			errors.add("userId",new ActionMessage("errors.required","ユーザID"));
@@ -40,15 +43,16 @@ public class LoginAction extends Action {
 			result = "error";
 		}
 
-		if(result != "error" && dbData.getUserid() == null) {
+		if(result != "error" && user.getUserid() == null) {
 			errors.add("userId",new ActionMessage("errors.notRegistrerd","ユーザID"));
 			result = "error";
-		} else if (result != "error" && !dbData.getPassward().equals(req.getParameter("password"))) {
+		} else if (result != "error" && !user.getPassward().equals(req.getParameter("password"))) {
 			errors.add("password",new ActionMessage("errors.invalid","パスワード"));
 			result = "error";
 		}
 
 		saveErrors(req, errors);
+
 		return (mapping.findForward(result));
 	}
 }

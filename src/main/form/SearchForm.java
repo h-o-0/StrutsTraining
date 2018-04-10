@@ -1,19 +1,28 @@
 package main.form;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.apache.struts.action.ActionForm;
+
 import ibatis.dto.Library;
+import logic.DBOperationLogic;
 
-public class SearchForm {
-	Library library1 = new Library(1, "テスト1", "１社", "イチ子");
-	Library library2 = new Library(2, "テスト2", "2社", "ジロー");
+public class SearchForm extends ActionForm {
 
-	private List<Library> libraryList = new ArrayList<Library>(Arrays.asList(library1, library2));
+	private static List<Library> libraryList = new ArrayList<Library>();
 	private String searchCategory;
 	private String searchWord;
 	private boolean selectBook;
+
+	static {
+		try {
+			libraryList = DBOperationLogic.serchLiblary(null, null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public String getSearchCategory() {
 		return searchCategory;
@@ -31,7 +40,7 @@ public class SearchForm {
 		return libraryList;
 	}
 	public void setLibraryList(List<Library> libraryList) {
-		this.libraryList = libraryList;
+		SearchForm.libraryList = libraryList;
 	}
 	public boolean isSelectBook() {
 		return selectBook;

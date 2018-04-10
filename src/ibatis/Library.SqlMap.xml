@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+          PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+          "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="Library">
+    <!-- SELECT -->
+    <select id="getLibrary" parameterClass="String" resultClass="ibatis.dto.Library">
+        SELECT
+            id,
+            title,
+            publisher,
+            author
+        FROM
+            pelibrary.library
+        WHERE
+            title = #VALUE#
+    </select>
+
+    <resultMap id="librarymap" class="ibatis.dto.Library">
+	    <result column="ID" property="id"/>
+	    <result column="TITLE" property="title"/>
+	    <result column="PUBLISHER" property="publisher"/>
+	    <result column="AUTHOR" property="author"/>
+	</resultMap>
+
+    <select id="searchLibrary" parameterClass="ibatis.dto.SearchLibrary"
+        resultMap="librarymap">
+   		 SELECT * FROM pelibrary.library
+	    <dynamic prepend="WHERE">
+	        <isNotEmpty prepend="AND" property="titleList">
+	      		<iterate property="titleList" open="" close="" conjunction="AND">
+					title Like CONCAT('%', #titleList[]#, '%')
+				</iterate>
+	        </isNotEmpty>
+	         <isNotEmpty prepend="AND" property="publisherList">
+	      		<iterate property="publisherList" open="" close="" conjunction="AND">
+					publisher Like CONCAT('%', #publisherList[]#, '%')
+				</iterate>
+	        </isNotEmpty>
+	         <isNotEmpty prepend="AND" property="authorList">
+	      		<iterate property="authorList" open="" close="" conjunction="AND">
+					author Like CONCAT('%', #authorList[]#, '%')
+				</iterate>
+	        </isNotEmpty>
+	    </dynamic>
+	</select>
+
+    <!-- UPDATE -->
+    <update id="updateLibrary" parameterClass="ibatis.dto.Library">
+        UPDATE pelibrary.library
+        SET title = #title#
+        WHERE id = #id#
+    </update>
+
+    <!-- DELETE -->
+    <delete id="deleteLibrary" parameterClass="String">
+        DELETE
+        FROM pelibrary.library
+        WHERE ID = #id#
+    </delete>
+
+    <!-- INSERT -->
+    <insert id="insertLibrary" parameterClass="ibatis.dto.Library">
+        INSERT INTO pelibrary.library (
+            title,
+            publisher,
+            author
+        ) VALUES (
+            #title#,
+            #publisher#,
+            #author#
+        )
+    </insert>
+</sqlMap>

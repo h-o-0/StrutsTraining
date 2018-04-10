@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+          PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+          "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="User">
+    <!-- SELECT -->
+    <select id="getUser" parameterClass="String" resultClass="ibatis.dto.User">
+        SELECT
+            ID,
+            PASSWORD
+        FROM
+            pelibrary.userdata
+        WHERE
+            ID = #VALUE#
+    </select>
+
+    <!-- UPDATE -->
+    <update id="updateUser" parameterClass="ibatis.dto.User">
+        UPDATE pelibrary.userdata
+        SET PASSWORD = #password#
+        WHERE id = #userid#
+    </update>
+
+    <!-- DELETE -->
+    <delete id="deleteUser" parameterClass="String">
+        DELETE
+        FROM pelibrary.userdata
+        WHERE ID = #userid#
+    </delete>
+
+    <!-- INSERT -->
+    <insert id="insertUser" parameterClass="ibatis.dto.User">
+        INSERT INTO pelibrary.userdata (
+            ID,
+            PASSWORD
+        ) VALUES (
+            #userid#,
+            #password#
+        )
+    </insert>
+</sqlMap>

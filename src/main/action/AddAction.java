@@ -1,5 +1,6 @@
 package main.action;
 
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
+
+import ibatis.dto.Library;
+import logic.DBOperationLogic;
 
 public class AddAction extends DispatchAction {
 	//デフォルト
@@ -25,7 +29,7 @@ public class AddAction extends DispatchAction {
 	public ActionForward validate(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
-			HttpServletResponse res) {
+			HttpServletResponse res) throws SQLException {
 
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
@@ -62,6 +66,14 @@ public class AddAction extends DispatchAction {
 		}
 
 		saveErrors(req, errors);
+
+		//TODO 登録処理：ポップアップが実装されたら移動
+		if(result != "error") {
+			Library addData = new Library(title, publisher, author);
+			DBOperationLogic.addLibrary(addData, volume);
+		}
+
+
 		return (mapping.findForward(result));
 	}
 

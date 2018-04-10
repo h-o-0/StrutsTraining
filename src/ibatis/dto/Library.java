@@ -63,5 +63,11 @@ public class Library {
 		this.author = author;
 	}
 
+	@Override
+	public String toString() {
+		return "Library [id=" + id + ", title=" + title + ", publisher=" + publisher + ", author=" + author + "]";
+	}
+
+
 
 }
