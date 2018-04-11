@@ -36,15 +36,14 @@ public class DetailAction extends DispatchAction {
 
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		Library library =  (Library)sqlMap.queryForObject("getLibrary", req.getParameter("id"));
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setLibrary(library);
 
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setStockList(stockList);
-
 
 		return (mapping.findForward("detail"));
 	}
@@ -60,12 +59,12 @@ public class DetailAction extends DispatchAction {
 		// 押下時にDBアクセス (表示データが最新とは限らない為)
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		Library library =  (Library)sqlMap.queryForObject("getLibrary", req.getParameter("id"));
+		Library library =  (Library)sqlMap.queryForObject("getLibrary",Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setLibrary(library);
 
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
 		Map<String,Stock> volumeMap = convertMap(stockList);
 
 		String result = "success";
@@ -87,7 +86,7 @@ public class DetailAction extends DispatchAction {
 		}
 
 		@SuppressWarnings("unchecked")
-		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
+		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setStockList(updateList);
 
@@ -107,12 +106,12 @@ public class DetailAction extends DispatchAction {
 		// 押下時にDBアクセス (表示データが最新とは限らない為)
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		Library library =  (Library)sqlMap.queryForObject("getLibrary", req.getParameter("id"));
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setLibrary(library);
 
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
 
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
@@ -163,7 +162,7 @@ public class DetailAction extends DispatchAction {
 		}
 
 		@SuppressWarnings("unchecked")
-		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setStockList(updateList);
 

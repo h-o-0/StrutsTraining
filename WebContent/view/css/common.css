@@ -19,27 +19,58 @@ td {
 	line-height:1.5em
 }
 
+p {
+	margin:0;
+}
+
 #searchResultWrapper {
 	margin:30px 0px;
-	width:100%;
 }
 
-#searchResultWrapper table{
-	width:100%;
+#searchResult thead,
+#searchResult tbody {
+	display:block;
 }
 
-#searchResultWrapper th {
+#searchResult th {
 	background:#b8cce4;
 }
 
-#searchResultWrapper th:first-child {
-	width:27px;
+#searchResult .checkBox {
+	width:30px;
 }
 
-#searchResultWrapper th,
-#searchResultWrapper td {
+#searchResult .title {
+	width:200px;
+}
+
+#searchResult .publisher {
+	width:100px;
+}
+
+#searchResult .author {
+	width:180px;
+}
+
+#searchResult .status {
+	width:96px;
+}
+
+#searchResult th:last-child {
+	width:15px;
+}
+
+#searchResult th,
+#searchResult td {
 	border:1px solid #333;
 	vertical-align:middle;
+}
+
+#searchResult tbody {
+	overflow-y:scroll;
+	height:270px;
+	border:1px solid #000;
+	border-top:none;
 }
 
 #stockListWrapper {
@@ -47,15 +78,26 @@ td {
 	width:100%;
 }
 
-#stockListWrapper table{
-	width:100%;
-}
-
-#stockListWrapper td {
+#stockList td {
+	width:61px;
+	height:30px;
 	border:1px solid #333;
 	text-align:center;
 	vertical-align:middle;
 	cursor:pointer;
+}
+
+#libraryDetail {
+	width:500px;
+	border:1px solid #000;
+}
+
+#libraryDetailWrapper > #libraryDetail {
+	border:none;
+}
+
+#libraryDetail tr > td:first-child {
+	width:100px;
 }
 
 .noStock {
@@ -73,8 +115,12 @@ td {
 	margin-bottom:15px;
 }
 
-.btnWrapper input.rightBtn {
+.btnWrapper .rightBtn {
 	float:right;
+}
+
+.btnWrapper form {
+	display:inline-block;
 }
 
 .error {

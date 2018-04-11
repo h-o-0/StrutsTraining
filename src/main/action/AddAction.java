@@ -30,7 +30,7 @@ public class AddAction extends DispatchAction {
 
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		Library library =  (Library)sqlMap.queryForObject("getLibrary", req.getParameter("id"));
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", Integer.parseInt(req.getParameter("id")));
 
 		addForm.setLibrary(library);
 
@@ -44,9 +44,15 @@ public class AddAction extends DispatchAction {
 			ActionForm form,
 			HttpServletRequest req,
 			HttpServletResponse res) throws SQLException {
-
+		AddForm addForm = (AddForm)form;
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
+
+		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", Integer.parseInt(req.getParameter("id")));
+
+		addForm.setLibrary(library);
 
 		String volume = req.getParameter("volume");
 
@@ -61,7 +67,7 @@ public class AddAction extends DispatchAction {
 		saveErrors(req, errors);
 
 		ActionRedirect actionRedirect = new ActionRedirect(mapping.findForward(result));
-		actionRedirect.addParameter("title", req.getParameter("title"));
+		actionRedirect.addParameter("id", req.getParameter("id"));
 
 		return (actionRedirect);
 	}

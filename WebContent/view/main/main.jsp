@@ -26,24 +26,25 @@
 			<html:submit property="searchBtn" value="検索" />
 		</div>
 		<div id="searchResultWrapper">
-			<table>
+			<table id="searchResult">
 				<thead>
 					<tr>
+						<th class="checkBox"></th>
+						<th class="title">タイトル</th>
+						<th class="publisher">出版社</th>
+						<th class="author">著者</th>
+						<th class="status">貸出状態</th>
 						<th></th>
-						<th>タイトル</th>
-						<th>出版社</th>
-						<th>著者</th>
-						<th>貸出状態</th>
 					</tr>
 				</thead>
 				<tbody>
 					<logic:iterate id="libraryList" name="SearchForm" property="libraryList">
 						<tr>
-							<td align="center"><html:checkbox property="selectBook"/></td>
+							<td class="checkBox" align="center"><html:checkbox property="selectBook"/></td>
 							<td class="title"><bean:write name="libraryList" property="title"/></td>
 							<td class="publisher"><bean:write name="libraryList" property="publisher"/></td>
 							<td class="author"><bean:write name="libraryList" property="author"/></td>
-							<td align="center"><html:link action="/detail" paramName="libraryList" paramId="title" paramProperty="title">貸出状態</html:link></td>
+							<td class="status" align="center"><html:link action="/detail" paramName="libraryList" paramId="id" paramProperty="id">貸出状態</html:link></td>
 						</tr>
 					</logic:iterate>
 				</tbody>
@@ -51,13 +52,13 @@
 		</div>
 		</html:form>
 		<div class="btnWrapper">
-			<html:form action="/edit">
+			<html:form action="/edit" styleClass="rightBtn">
 				<html:hidden property="title" />
 				<html:hidden property="volume" />
 				<html:hidden property="publisher" />
 				<html:hidden property="author" />
 				<html:hidden property="isNewBook" value="true" />
-				<html:submit property="editBtn" value="追加" styleClass="rightBtn" />
+				<html:submit property="editBtn" value="追加" />
 			</html:form>
 		</div>
 	</div>
@@ -77,8 +78,8 @@
 				if(document.SearchForm.selectBook[i].checked){
 					$('[name="title"]').val($('td.title:eq('+i+')').text());
 					$('[name="volume"]').val('1');
-					$('[name="publisher"]').val($('.publisher:eq('+i+')').text());
-					$('[name="author"]').val($('.author:eq('+i+')').text());
+					$('[name="publisher"]').val($('td.publisher:eq('+i+')').text());
+					$('[name="author"]').val($('td.author:eq('+i+')').text());
 					$('[name="isNewBook"]').val('false');
 					break;
 				}
