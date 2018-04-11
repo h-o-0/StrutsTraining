@@ -1,8 +1,10 @@
 package main.action;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,26 +16,27 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import ibatis.MyAppSqlConfig;
 import ibatis.dto.Stock;
 import main.form.DetailForm;
 
 public class DetailAction extends DispatchAction {
+
+
 	//デフォルト
 	public ActionForward unspecified(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
-			HttpServletResponse res) {
+			HttpServletResponse res) throws SQLException {
 
 		DetailForm detailForm = (DetailForm)form;
 
-		List<Stock> stockList = new ArrayList<Stock>();
+		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		for(int i=0;i<10;i++) {
-			stockList.add(new Stock("ドラゴンボール",String.valueOf(i+1),1));
-		}
-		for(int i=10;i<25;i++) {
-			stockList.add(new Stock("ドラゴンボール",String.valueOf(i+1),0));
-		}
+		@SuppressWarnings("unchecked")
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
 
 		detailForm.setStockList(stockList);
 		detailForm.setTitle(req.getParameter("title"));
@@ -42,90 +45,129 @@ public class DetailAction extends DispatchAction {
 	}
 
 	//削除
-		public ActionForward delete(ActionMapping mapping,
-				ActionForm form,
-				HttpServletRequest req,
-				HttpServletResponse res) {
+	public ActionForward delete(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) throws SQLException {
 
-			DetailForm detailForm = (DetailForm)form;
+		// 押下時にDBアクセス (表示データが最新とは限らない為)
+		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+		@SuppressWarnings("unchecked")
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+		Map<String,Stock> volumeMap = convertMap(stockList);
+		DetailForm detailForm = (DetailForm)form;
 
-			List<Stock> stockList1 = new ArrayList<Stock>();
+		String result = "success";
+		ActionMessages errors = new ActionMessages();
 
-			for(int i=0;i<10;i++) {
-				stockList1.add(new Stock("ドラゴンボール",String.valueOf(i+1),1));
-			}
-			for(int i=10;i<25;i++) {
-				stockList1.add(new Stock("ドラゴンボール",String.valueOf(i+1),0));
-			}
-
-			detailForm.setStockList(stockList1);
-
-
-			String result = "success";
-			ActionMessages errors = new ActionMessages();
-
-			if(req.getParameter("selectList").isEmpty()) {
-				errors.add("delete",new ActionMessage("errors.required.select","削除対象"));
-				result = "error";
-			}
-
-			//削除処理
-
-			detailForm.setTitle(req.getParameter("title"));
-			saveErrors(req, errors);
-
-			return (mapping.findForward(result));
+		if(req.getParameter("selectList").isEmpty()) {
+			errors.add("delete",new ActionMessage("errors.required.select","削除対象"));
+			result = "error";
 		}
 
+		//削除処理
+		// TODO ポップアップの処理に記載予定
+		if(result != "error") {
+			for(String selectNo : Arrays.asList(req.getParameter("selectList").split(","))) {
+				sqlMap.delete("deleteStock", volumeMap.get(selectNo));
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+
+		detailForm.setStockList(updateList);
+		detailForm.setTitle(req.getParameter("title"));
+		saveErrors(req, errors);
+
+		return (mapping.findForward(result));
+	}
+
 	//貸出返却
-		public ActionForward lend(ActionMapping mapping,
-				ActionForm form,
-				HttpServletRequest req,
-				HttpServletResponse res) {
+	public ActionForward lend(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) throws SQLException {
 
-			DetailForm detailForm = (DetailForm)form;
+		// 押下時にDBアクセス (表示データが最新とは限らない為)
+		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+		@SuppressWarnings("unchecked")
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+		DetailForm detailForm = (DetailForm)form;
 
-			List<Stock> stockList1 = new ArrayList<Stock>();
+		String result = "success";
+		ActionMessages errors = new ActionMessages();
 
-			for(int i=0;i<10;i++) {
-				stockList1.add(new Stock("ドラゴンボール",String.valueOf(i+1),1));
-			}
-			for(int i=10;i<25;i++) {
-				stockList1.add(new Stock("ドラゴンボール",String.valueOf(i+1),0));
-			}
+		// バリデーション
+		if(req.getParameter("selectList").isEmpty()) {
+			errors.add("delete",new ActionMessage("errors.required.select","貸出/返却対象"));
+			result = "error";
+		}
 
-			detailForm.setStockList(stockList1);
+		if(result != "error") {
+			List<String> selectList = Arrays.asList(req.getParameter("selectList").split(","));
 
-			String result = "success";
-			ActionMessages errors = new ActionMessages();
+			Map<String,Stock> volumeMap = convertMap(stockList);
 
-			if(req.getParameter("selectList").isEmpty()) {
-				errors.add("delete",new ActionMessage("errors.required.select","貸出/返却対象"));
-				result = "error";
-			}
-
-			if(result != "error") {
-				List<Stock> stockList = detailForm.getStockList();
-				List<String> selectList = Arrays.asList(req.getParameter("selectList").split(","));
-
-				int nowStatus = 0;
-				for(int i=0; i<selectList.size(); i++) {
-					int status = stockList.get(Integer.parseInt(selectList.get(i))).getStatus();
-					if(i == 0) {
-						nowStatus = status;
-					}
-					if(nowStatus != status) {
-						errors.add("lend",new ActionMessage("errors.lend.select"));
-						result = "error";
-						break;
-					}
+			Integer nowStatus = null;
+			for(String selectNo : selectList) {
+				int status = volumeMap.get(selectNo).getStatus();
+				if(nowStatus == null) {
+					nowStatus = status;
+				}
+				if(nowStatus != status) {
+					errors.add("lend",new ActionMessage("errors.lend.select"));
+					result = "error";
+					break;
 				}
 			}
 
 			//貸出返却処理
+			// TODO それぞれポップアップの処理に記載予定
 
-			saveErrors(req, errors);
+			// 返却
+			if(nowStatus == 0 && result != "error") {
+				for(String selectNo : selectList) {
+					sqlMap.update("updateStatusLendable", volumeMap.get(selectNo));
+					//TODO コメント消し
+				}
+			}
 
-			return (mapping.findForward(result));
+			// 貸出
+			if(nowStatus == 1 && result != "error") {
+				for(String selectNo : selectList) {
+					sqlMap.update("updateStatusOnLoan", volumeMap.get(selectNo));
+					//TODO コメントアップデート
+				}
+			}
+
 		}
+
+		@SuppressWarnings("unchecked")
+		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+
+		detailForm.setStockList(updateList);
+
+		saveErrors(req, errors);
+
+		return (mapping.findForward(result));
+	}
+
+
+	/**
+	 * Stockのリストをkeyが巻数のMapに変換します
+	 * @param list Stockのリスト
+	 * @return 変換後のmap
+	 */
+	private Map<String,Stock> convertMap(List<Stock> list) {
+		Map<String,Stock> map = new HashMap<String,Stock>();
+
+		for(Stock stockData : list) {
+			map.put(stockData.getVolume(), stockData);
+
+		}
+
+		return map;
+	}
+
 }
