@@ -6,7 +6,7 @@
 
 <sqlMap namespace="Library">
     <!-- SELECT -->
-    <select id="getLibrary" parameterClass="String" resultClass="ibatis.dto.Library">
+    <select id="getLibrary" parameterClass="int" resultClass="ibatis.dto.Library">
         SELECT
             id,
             title,
@@ -15,7 +15,7 @@
         FROM
             pelibrary.library
         WHERE
-            title = #VALUE#
+            id = #VALUE#
     </select>
 
     <resultMap id="librarymap" class="ibatis.dto.Library">
@@ -58,7 +58,13 @@
     <delete id="deleteLibrary" parameterClass="String">
         DELETE
         FROM pelibrary.library
-        WHERE ID = #id#
+        WHERE ID = #iVALUE#
+    </delete>
+
+     <delete id="deleteLibrary" parameterClass="String">
+        DELETE
+        FROM pelibrary.library
+        WHERE TITLE = #iVALUE#
     </delete>
 
     <!-- INSERT -->

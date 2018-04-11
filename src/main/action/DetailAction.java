@@ -19,6 +19,7 @@ import org.apache.struts.actions.DispatchAction;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import ibatis.MyAppSqlConfig;
+import ibatis.dto.Library;
 import ibatis.dto.Stock;
 import main.form.DetailForm;
 
@@ -35,11 +36,15 @@ public class DetailAction extends DispatchAction {
 
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", req.getParameter("id"));
+
+		detailForm.setLibrary(library);
+
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
 
 		detailForm.setStockList(stockList);
-		detailForm.setTitle(req.getParameter("title"));
+
 
 		return (mapping.findForward("detail"));
 	}
@@ -50,12 +55,18 @@ public class DetailAction extends DispatchAction {
 			HttpServletRequest req,
 			HttpServletResponse res) throws SQLException {
 
+		DetailForm detailForm = (DetailForm)form;
+
 		// 押下時にDBアクセス (表示データが最新とは限らない為)
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", req.getParameter("id"));
+
+		detailForm.setLibrary(library);
+
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
 		Map<String,Stock> volumeMap = convertMap(stockList);
-		DetailForm detailForm = (DetailForm)form;
 
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
@@ -71,13 +82,15 @@ public class DetailAction extends DispatchAction {
 			for(String selectNo : Arrays.asList(req.getParameter("selectList").split(","))) {
 				sqlMap.delete("deleteStock", volumeMap.get(selectNo));
 			}
+
+
 		}
 
 		@SuppressWarnings("unchecked")
-		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
+		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
 
 		detailForm.setStockList(updateList);
-		detailForm.setTitle(req.getParameter("title"));
+
 		saveErrors(req, errors);
 
 		return (mapping.findForward(result));
@@ -89,11 +102,17 @@ public class DetailAction extends DispatchAction {
 			HttpServletRequest req,
 			HttpServletResponse res) throws SQLException {
 
+		DetailForm detailForm = (DetailForm)form;
+
 		// 押下時にDBアクセス (表示データが最新とは限らない為)
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", req.getParameter("id"));
+
+		detailForm.setLibrary(library);
+
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", req.getParameter("title"));
-		DetailForm detailForm = (DetailForm)form;
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", library.getTitle());
 
 		String result = "success";
 		ActionMessages errors = new ActionMessages();

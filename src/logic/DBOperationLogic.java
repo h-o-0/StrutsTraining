@@ -70,11 +70,11 @@ public class DBOperationLogic {
 	 * @param volume 巻数 ([数字]-[数字]なら複数登録)
 	 * @throws SQLException
 	 */
-	public static void addLibrary(Library addData ,String volume) throws SQLException {
+	public static void addLibrary(Library addData) throws SQLException {
 
 		sqlMap.insert("insertLibrary", addData);
 
-		addStock(addData.getTitle() ,"1");
+		addStock(addData.getId() ,"1");
 
 	}
 
@@ -84,7 +84,9 @@ public class DBOperationLogic {
 	 * @param volume　巻数 ([数字]-[数字]なら複数登録)
 	 * @throws SQLException
 	 */
-	private static void addStock(String title ,String volume) throws SQLException {
+	private static void addStock(int id ,String volume) throws SQLException {
+
+		Library libraryData = (Library)sqlMap.queryForObject("getLibrary", id);
 
 		if(Pattern.compile("\\-").matcher(volume).find()) {
 			String[] volumes = volume.split("-");
@@ -92,12 +94,12 @@ public class DBOperationLogic {
 			Integer endNo = Integer.parseInt(volumes[1]);
 
 			for(int i=startNo;i<endNo;i++) {
-				Stock insertData = new Stock(title,String.valueOf(i));
+				Stock insertData = new Stock(id, libraryData.getTitle(), String.valueOf(i));
 				sqlMap.insert("insertStock", insertData);
 			}
 
 		} else {
-			Stock insertData = new Stock(title,volume);
+			Stock insertData = new Stock(id, libraryData.getTitle(), volume);
 			sqlMap.insert("insertStock", insertData);
 
 		}
