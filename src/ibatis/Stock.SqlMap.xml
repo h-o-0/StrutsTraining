@@ -10,9 +10,12 @@
 	<!-- resultMapを記述してIBATISの機能でマッピングする方法DBに依存しない記述のテスト -->
 	<!-- タイトルを指定し、そのタイトルの全データを取得します -->
     <resultMap id="stockmap" class="ibatis.dto.Stock">
+    	<result column="ID" property="id"/>
+    	<result column="PARENT_ID" property="parent_id"/>
 	    <result column="TITLE" property="title"/>
 	    <result column="VOLUME" property="volume"/>
 	    <result column="STATUS" property="status"/>
+	    <result column="LOAN_COMMENT" property="loan_comment"/>
 	</resultMap>
 
 	<select id="getStockDataEachTitle" parameterClass="int"  resultMap="stockmap">
@@ -25,14 +28,14 @@
     <update id="updateStatusLendable" parameterClass="ibatis.dto.Stock">
         UPDATE pelibrary.stock
         SET STATUS = 1
-        WHERE TITLE = #title# AND VOLUME = #volume#
+        WHERE parent_id = #parent_id# AND VOLUME = #volume#
     </update>
 
 	 <!-- タイトル、巻を指定し、貸出中状態に変更します -->
     <update id="updateStatusOnLoan" parameterClass="ibatis.dto.Stock">
         UPDATE pelibrary.stock
         SET STATUS = 0
-        WHERE TITLE = #title# AND VOLUME = #volume#
+        WHERE parent_id = #parent_id# AND VOLUME = #volume#
     </update>
 
     <!-- DELETE -->
@@ -40,7 +43,7 @@
     <delete id="deleteStock" parameterClass="ibatis.dto.Stock">
         DELETE
         FROM pelibrary.stock
-        WHERE TITLE = #title# AND VOLUME = #volume#
+        WHERE parent_id = #parent_id# AND VOLUME = #volume#
     </delete>
 
     <!-- INSERT -->

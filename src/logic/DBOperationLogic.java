@@ -74,7 +74,7 @@ public class DBOperationLogic {
 
 		sqlMap.insert("insertLibrary", addData);
 
-		addStock(addData.getId() ,"1");
+		addStock((int)sqlMap.queryForObject("lastinsertID") ,"1");
 
 	}
 

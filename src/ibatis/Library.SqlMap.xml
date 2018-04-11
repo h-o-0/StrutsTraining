@@ -47,6 +47,10 @@
 	    </dynamic>
 	</select>
 
+	 <select id="lastinsertID"  resultClass="int">
+        SELECT LAST_INSERT_ID();
+    </select>
+
     <!-- UPDATE -->
     <update id="updateLibrary" parameterClass="ibatis.dto.Library">
         UPDATE pelibrary.library
