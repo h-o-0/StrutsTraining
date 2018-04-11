@@ -61,7 +61,7 @@ public class EditAction extends DispatchAction {
 		//TODO 登録処理：ポップアップが実装されたら移動
 		if(result != "error") {
 			Library addData = new Library(title, publisher, author);
-			DBOperationLogic.addLibrary(addData, "1");
+			DBOperationLogic.addLibrary(addData);
 		}
 
 

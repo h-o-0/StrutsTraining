@@ -15,8 +15,8 @@
 	    <result column="STATUS" property="status"/>
 	</resultMap>
 
-	<select id="getStockDataEachTitle" parameterClass="String"  resultMap="stockmap">
-    	SELECT * FROM pelibrary.stock WHERE title = #VALUE#
+	<select id="getStockDataEachTitle" parameterClass="int"  resultMap="stockmap">
+    	SELECT * FROM pelibrary.stock WHERE parent_id = #VALUE#
 	</select>
 
     <!-- UPDATE -->
@@ -46,13 +46,15 @@
     <!-- INSERT -->
     <insert id="insertStock" parameterClass="ibatis.dto.Stock">
         INSERT INTO pelibrary.stock (
+        	PARENT_ID,
             TITLE,
             VOLUME,
             STATUS
         ) VALUES (
+        	#parent_id#,
             #title#,
             #volume#,
-            0
+            1
         )
     </insert>
 </sqlMap>

@@ -71,6 +71,8 @@ public class DetailAction extends DispatchAction {
 			for(String selectNo : Arrays.asList(req.getParameter("selectList").split(","))) {
 				sqlMap.delete("deleteStock", volumeMap.get(selectNo));
 			}
+
+
 		}
 
 		@SuppressWarnings("unchecked")
