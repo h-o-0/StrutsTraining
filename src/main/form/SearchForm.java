@@ -4,14 +4,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionMapping;
 
 import ibatis.dto.Library;
 import logic.DBOperationLogic;
 
 public class SearchForm extends ActionForm {
 
-	private static List<Library> libraryList = new ArrayList<Library>();
+	private static  List<Library> libraryList = new ArrayList<Library>();
 	private String searchCategory;
 	private String searchWord;
 	private boolean selectBook;
@@ -48,4 +51,12 @@ public class SearchForm extends ActionForm {
 	public void setSelectBook(boolean selectBook) {
 		this.selectBook = selectBook;
 	}
+	public void reset(ActionMapping mapping, HttpServletRequest request){
+		try {
+			libraryList = DBOperationLogic.serchLiblary(null, null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	 }
+
 }
