@@ -51,13 +51,13 @@
 		</div>
 		</html:form>
 		<div class="btnWrapper">
-			<html:form action="/add">
+			<html:form action="/edit">
 				<html:hidden property="title" />
 				<html:hidden property="volume" />
 				<html:hidden property="publisher" />
 				<html:hidden property="author" />
-				<html:hidden property="selectBook" />
-				<html:submit property="addBtn" value="追加" styleClass="rightBtn" />
+				<html:hidden property="isNewBook" value="true" />
+				<html:submit property="editBtn" value="追加" styleClass="rightBtn" />
 			</html:form>
 		</div>
 	</div>
@@ -72,14 +72,14 @@
 			}
 		});
 
-		$('[name="addBtn"]').click(function(){
+		$('[name="editBtn"]').click(function(){
 			for(var i=0; i<document.SearchForm.selectBook.length; i++){
 				if(document.SearchForm.selectBook[i].checked){
 					$('[name="title"]').val($('td.title:eq('+i+')').text());
 					$('[name="volume"]').val('1');
 					$('[name="publisher"]').val($('.publisher:eq('+i+')').text());
 					$('[name="author"]').val($('.author:eq('+i+')').text());
-					$('[name="selectBook"][type="hidden"]').val('true');
+					$('[name="isNewBook"]').val('false');
 					break;
 				}
 			}

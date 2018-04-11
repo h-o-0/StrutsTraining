@@ -1,41 +1,44 @@
 package main.action;
 
-import java.util.regex.Pattern;
+import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.actions.DispatchAction;
 
-public class EditAction extends Action {
-	public ActionForward execute(ActionMapping mapping,
+import ibatis.dto.Library;
+import logic.DBOperationLogic;
+
+public class EditAction extends DispatchAction {
+	//デフォルト
+	public ActionForward unspecified(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
 			HttpServletResponse res) {
+		return (mapping.findForward("success"));
+	}
+
+	//画面内 登録ボタンクリック時：入力チェック
+	public ActionForward validate(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) throws SQLException {
 
 		String result = "success";
-
 		ActionMessages errors = new ActionMessages();
 
 		String title = req.getParameter("title");
-		String volume = req.getParameter("volume");
 		String publisher = req.getParameter("publisher");
 		String author = req.getParameter("author");
 
 		if(title.isEmpty()) {
 			errors.add("title",new ActionMessage("errors.required","タイトル"));
-			result = "error";
-		}
-		if(volume.isEmpty()) {
-			errors.add("volume",new ActionMessage("errors.required","巻"));
-			result = "error";
-		}else if(!volumeCheck(volume)) {
-			errors.add("volume",new ActionMessage("errors.volume.format"));
 			result = "error";
 		}
 		if(publisher.isEmpty()) {
@@ -47,25 +50,60 @@ public class EditAction extends Action {
 			result = "error";
 		}
 
-		req.setAttribute("title", req.getParameter("title"));
-		req.setAttribute("volume", req.getParameter("volume"));
-		req.setAttribute("publisher", req.getParameter("publisher"));
-		req.setAttribute("author", req.getParameter("author"));
+		if(result.equals("success")) {
+			req.setAttribute("noError","true");
+		}else {
+			req.setAttribute("noError","false");
+		}
 
 		saveErrors(req, errors);
+
+		//TODO 登録処理：ポップアップが実装されたら移動
+		if(result != "error") {
+			Library addData = new Library(title, publisher, author);
+			DBOperationLogic.addLibrary(addData, "1");
+		}
+
+
 		return (mapping.findForward(result));
 	}
 
-	private boolean volumeCheck (String volume) {
-		System.out.print(Pattern.compile("\\-").matcher(volume).find());
-		if(Pattern.compile("\\-").matcher(volume).find()) {
-			String[] volumes = volume.split("-");
-			for(int i=0;i<volumes.length;i++) {
-				if(Pattern.compile("[^\\d]").matcher(volumes[i]).find()) {
-					return false;
-				}
-			}
+
+	//登録処理(INSERT)
+	public ActionForward insertRegist(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) {
+
+		String result = "success";
+
+		//登録処理
+
+		if(result.equals("success")) {
+			req.setAttribute("registComplete", "true");
+		}else {
+			req.setAttribute("registComplete", "false");
 		}
-		return true;
+
+		return (mapping.findForward(result));
+	}
+
+	//登録処理(UPDATE)
+	public ActionForward updateRegist(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) {
+
+		String result = "success";
+
+		//登録処理
+
+		if(result.equals("success")) {
+			req.setAttribute("registComplete", "true");
+		}else {
+			req.setAttribute("registComplete", "false");
+		}
+
+		return (mapping.findForward(result));
 	}
 }
