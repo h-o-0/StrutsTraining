@@ -55,16 +55,10 @@
     </update>
 
     <!-- DELETE -->
-    <delete id="deleteLibrary" parameterClass="String">
+    <delete id="deleteLibrary" parameterClass="int">
         DELETE
         FROM pelibrary.library
-        WHERE ID = #iVALUE#
-    </delete>
-
-     <delete id="deleteLibrary" parameterClass="String">
-        DELETE
-        FROM pelibrary.library
-        WHERE TITLE = #iVALUE#
+        WHERE ID = #VALUE#
     </delete>
 
     <!-- INSERT -->

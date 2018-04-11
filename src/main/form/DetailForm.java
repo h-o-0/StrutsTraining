@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.apache.struts.action.ActionForm;
 
+import ibatis.dto.Library;
 import ibatis.dto.Stock;
 
 public class DetailForm extends ActionForm {
 	private List<Stock> stockList = new ArrayList<Stock>();
 	private String selectList;
-	private String title;
+	private String id;
+	private Library library;
 
 	public List<Stock> getStockList() {
 		return stockList;
@@ -28,12 +30,20 @@ public class DetailForm extends ActionForm {
 		this.selectList = selectList;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getId() {
+		return id;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Library getLibrary() {
+		return library;
+	}
+
+	public void setLibrary(Library library) {
+		this.library = library;
 	}
 
 }

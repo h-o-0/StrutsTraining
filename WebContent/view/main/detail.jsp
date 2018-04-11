@@ -13,8 +13,20 @@
 </head>
 <body>
 	<div id="wrapper">
-		<html:form action="/detail">
-		<h3><bean:write name="DetailForm" property="title"/></h3>
+		<html:form action="/detail" styleId="stockListForm">
+		<h3><bean:write name="DetailForm" property="library.title"/></h3>
+		<div id="libraryDetailWrapper">
+			<table id="libraryDetail">
+				<tr>
+					<td>出版社</td>
+					<td><bean:write name="DetailForm" property="library.publisher"/></td>
+				</tr>
+				<tr>
+					<td>著者</td>
+					<td><bean:write name="DetailForm" property="library.author"/></td>
+				</tr>
+			</table>
+		</div>
 		<div id="stockListWrapper">
 			<html:errors property="delete" />
 			<html:errors property="lend" />
@@ -42,13 +54,28 @@
 				</logic:iterate>
 			</table>
 		</div>
-		<div class="btnWrapper">
-			<html:hidden property="selectList"/>
-			<html:hidden property="title"/>
-			<html:submit property="deleteBtn" value="削除" />
-			<html:submit property="lendBtn" value="貸出/返却" styleClass="rightBtn" />
-		</div>
 		</html:form>
+		<div class="btnWrapper">
+			<html:button property="toMain" value="戻る" />
+			<div class="rightBtn">
+				<html:form action="/detail" styleId="deleteForm">
+					<html:hidden property="selectList"/>
+					<html:hidden property="id"/>
+					<html:submit property="deleteBtn" value="削除" />
+				</html:form>
+				<html:form action="/add" styleId="addForm">
+					<html:hidden name="DetailForm" property="id"/>
+					<html:hidden property="volume"/>
+					<html:submit property="addBtn" value="追加" />
+				</html:form>
+				<html:form action="/detail" styleId="lendForm">
+					<html:hidden property="selectList"/>
+					<html:hidden property="id"/>
+					<html:submit property="lendBtn" value="貸出/返却" />
+					</html:form>
+			</div>
+		</div>
+
 	</div>
 
 	<script type="text/javascript">
@@ -61,16 +88,28 @@
 			}
 		});
 
-		$('[name="deleteBtn"]').click(function(){
-			sendSelectList();
-			document.DetailForm.action = '<%= request.getContextPath() %>/detail.do?method=delete';
-			document.DetailForm.submit();
+		$('[name="toMain"]').on('click', function(){
+			location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
 		});
 
+		//削除
+		$('[name="deleteBtn"]').click(function(){
+			sendSelectList();
+			$('#deleteForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=delete');
+			$('#deleteForm').submit();
+		});
+
+		//追加
+		$('[name="addBtn"]').click(function(){
+			$('[name="volume"]').val($('#stockList td').length() + 1);
+			$('#addForm').submit();
+		});
+
+		//貸出返却
 		$('[name="lendBtn"]').click(function(){
 			sendSelectList();
-			document.DetailForm.action = '<%= request.getContextPath() %>/detail.do?method=lend';
-			document.DetailForm.submit();
+			$('#lendForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=lend');
+			$('#lendForm').submit();
 		});
 
 		function getSelectList() {
