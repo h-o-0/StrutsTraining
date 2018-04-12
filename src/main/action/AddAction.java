@@ -66,14 +66,11 @@ public class AddAction extends DispatchAction {
 		}
 
 		if(result.equals("success")) {
+			DBOperationLogic.addStock(library.getId(), volume);
 			return new RedirectingActionForward("/detail.do?id=" + req.getParameter("id"));
 		}
 
 		saveErrors(req, errors);
-
-		if(result != "error") {
-			DBOperationLogic.addStock(library.getId(), volume);
-		}
 
 		return (mapping.findForward(result));
 	}
