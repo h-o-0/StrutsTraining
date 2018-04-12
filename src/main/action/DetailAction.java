@@ -49,6 +49,43 @@ public class DetailAction extends DispatchAction {
 		return (mapping.findForward("success"));
 	}
 
+	//削除チェック
+	public ActionForward deleteCheck(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) throws SQLException {
+
+		DetailForm detailForm = (DetailForm) form;
+
+		// 押下時にDBアクセス (表示データが最新とは限らない為)
+		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+
+		String result = "success";
+		ActionMessages errors = new ActionMessages();
+
+		if (req.getParameter("selectList").isEmpty()) {
+			errors.add("delete", new ActionMessage("errors.required.select", "削除対象"));
+			result = "error";
+		}
+
+		@SuppressWarnings("unchecked")
+		List<Stock> updateList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
+				Integer.parseInt(req.getParameter("id")));
+
+		detailForm.setStockList(updateList);
+
+		if (result != "error") {
+			req.setAttribute("deleteCheck", "true");
+		} else {
+			req.setAttribute("deleteCheck", "false");
+		}
+
+		saveErrors(req, errors);
+
+		return (mapping.findForward(result));
+	}
+
+
 	//削除
 	public ActionForward delete(ActionMapping mapping,
 			ActionForm form,
@@ -78,7 +115,6 @@ public class DetailAction extends DispatchAction {
 		}
 
 		//削除処理
-		// TODO ポップアップの処理に記載予定
 		if(result != "error") {
 			for(String selectNo : Arrays.asList(req.getParameter("selectList").split(","))) {
 				sqlMap.delete("deleteStock", volumeMap.get(selectNo));
@@ -263,7 +299,7 @@ public class DetailAction extends DispatchAction {
 		Map<String,Stock> map = new HashMap<String,Stock>();
 
 		for(Stock stockData : list) {
-			map.put(stockData.getVolume(), stockData);
+			map.put(String.valueOf(stockData.getId()) , stockData);
 
 		}
 

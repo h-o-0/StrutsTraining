@@ -12,6 +12,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
+import logic.DBOperationLogic;
+
 public class DeleteAction extends DispatchAction {
 
 	//削除チェック
@@ -49,6 +51,7 @@ public class DeleteAction extends DispatchAction {
 		ActionMessages errors = new ActionMessages();
 
 		//削除処理
+		DBOperationLogic.deleteLibrary(Integer.parseInt(req.getParameter("id")));
 
 		if (result.equals("success")) {
 			req.setAttribute("registComplete", "true");

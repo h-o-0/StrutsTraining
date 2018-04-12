@@ -13,7 +13,7 @@ public class DetailForm extends ActionForm {
 	private String selectList;
 	private String id;
 	private String loan_comment;
-	private Library library;
+	private Library library = new Library();
 
 	public List<Stock> getStockList() {
 		return stockList;

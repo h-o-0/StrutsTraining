@@ -24,18 +24,18 @@
 
     <!-- UPDATE -->
 
-    <!-- 親ID、巻を指定し、貸出可能状態に変更します -->
+    <!-- IDを指定し、貸出可能状態に変更します -->
     <update id="updateStatusLendable" parameterClass="ibatis.dto.Stock">
         UPDATE pelibrary.stock
         SET STATUS = 1 , LOAN_COMMENT = NULL
-        WHERE parent_id = #parent_id# AND VOLUME = #volume#
+        WHERE ID = #id#
     </update>
 
-	 <!-- 親ID、巻を指定し、貸出中状態に変更します -->
+	 <!-- IDを指定し、貸出中状態に変更します -->
     <update id="updateStatusOnLoan" parameterClass="ibatis.dto.Stock">
         UPDATE pelibrary.stock
         SET STATUS = 0, LOAN_COMMENT = #loan_comment#
-        WHERE parent_id = #parent_id# AND VOLUME = #volume#
+       WHERE ID = #id#
     </update>
 
 	<!-- 親IDを指定し、タイトルを変更します -->
@@ -46,11 +46,11 @@
     </update>
 
     <!-- DELETE -->
-    <!-- 親ID、巻を指定し、物理削除します -->
+    <!-- IDを指定し、物理削除します -->
     <delete id="deleteStock" parameterClass="ibatis.dto.Stock">
         DELETE
         FROM pelibrary.stock
-        WHERE parent_id = #parent_id# AND VOLUME = #volume#
+        WHERE ID = #id#
     </delete>
 
      <!-- 親IDを指定し、物理削除します -->

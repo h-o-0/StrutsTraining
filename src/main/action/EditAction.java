@@ -77,14 +77,9 @@ public class EditAction extends DispatchAction {
 		String result = "success";
 
 		//登録処理
-		String title = req.getParameter("title");
-		String publisher = req.getParameter("publisher");
-		String author = req.getParameter("author");
-
-		if(result != "error") {
-			Library addData = new Library(title, publisher, author);
-			DBOperationLogic.addLibrary(addData);
-		}
+		Library addData
+				= new Library(req.getParameter("title"), req.getParameter("publisher"), req.getParameter("author"));
+		DBOperationLogic.addLibrary(addData);
 
 		if(result.equals("success")) {
 			req.setAttribute("registComplete", "true");
@@ -99,11 +94,16 @@ public class EditAction extends DispatchAction {
 	public ActionForward updateRegist(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
-			HttpServletResponse res) {
+			HttpServletResponse res) throws SQLException {
 
 		String result = "success";
 
 		//登録処理
+		Library editData
+			= new Library(req.getParameter("title"), req.getParameter("publisher"), req.getParameter("author"));
+
+		editData.setId(Integer.parseInt(req.getParameter("id")));
+		DBOperationLogic.editLibrary(editData);;
 
 		if(result.equals("success")) {
 			req.setAttribute("registComplete", "true");
