@@ -4,12 +4,19 @@ import org.apache.struts.action.ActionForm;
 
 public class EditForm extends ActionForm {
 
+	private String id;
 	private String title;
 	private String volume;
 	private String publisher;
 	private String author;
 	private boolean isNewBook;
 
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getTitle() {
 		return title;
 	}

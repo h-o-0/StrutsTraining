@@ -40,7 +40,7 @@
 				<tbody>
 					<logic:iterate id="libraryList" name="SearchForm" property="libraryList">
 						<tr>
-							<td class="checkBox" align="center"><html:checkbox property="selectBook"/></td>
+							<td class="checkBox" align="center"><html:checkbox property="selectBook"/><html:hidden name="libraryList" property="id"/></td>
 							<td class="title"><bean:write name="libraryList" property="title"/></td>
 							<td class="publisher"><bean:write name="libraryList" property="publisher"/></td>
 							<td class="author"><bean:write name="libraryList" property="author"/></td>
@@ -53,6 +53,7 @@
 		</html:form>
 		<div class="btnWrapper">
 			<html:form action="/edit" styleClass="rightBtn">
+				<html:hidden property="id" />
 				<html:hidden property="title" />
 				<html:hidden property="volume" />
 				<html:hidden property="publisher" />
@@ -76,6 +77,7 @@
 		$('[name="editBtn"]').click(function(){
 			for(var i=0; i<document.SearchForm.selectBook.length; i++){
 				if(document.SearchForm.selectBook[i].checked){
+					$('[name="EditForm"] [name="id"]').val($('[name="id"]:eq('+i+')').val());
 					$('[name="title"]').val($('td.title:eq('+i+')').text());
 					$('[name="volume"]').val('1');
 					$('[name="publisher"]').val($('td.publisher:eq('+i+')').text());

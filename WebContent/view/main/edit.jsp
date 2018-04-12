@@ -57,6 +57,7 @@
 			</table>
 			</div>
 			<div class="btnWrapper">
+				<html:hidden property="id" />
 				<html:hidden property="isNewBook" />
 				<html:button property="toMain" value="戻る" />
 				<html:submit property="submitBtn" value="登録" styleClass="rightBtn" />
