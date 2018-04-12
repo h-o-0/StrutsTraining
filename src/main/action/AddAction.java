@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.RedirectingActionForward;
 import org.apache.struts.actions.DispatchAction;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
@@ -61,6 +62,10 @@ public class AddAction extends DispatchAction {
 		}else if(!volumeCheck(volume)) {
 			errors.add("volume",new ActionMessage("errors.volume.format"));
 			result = "error";
+		}
+
+		if(result.equals("success")) {
+			return new RedirectingActionForward("/detail.do?id=" + req.getParameter("id"));
 		}
 
 		saveErrors(req, errors);

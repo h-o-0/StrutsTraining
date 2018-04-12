@@ -96,6 +96,70 @@ public class DetailAction extends DispatchAction {
 	}
 
 	//貸出返却
+	public ActionForward validate(ActionMapping mapping,
+			ActionForm form,
+			HttpServletRequest req,
+			HttpServletResponse res) throws SQLException {
+
+		DetailForm detailForm = (DetailForm)form;
+
+		// 押下時にDBアクセス (表示データが最新とは限らない為)
+		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+
+		Library library =  (Library)sqlMap.queryForObject("getLibrary", Integer.parseInt(req.getParameter("id")));
+
+		detailForm.setLibrary(library);
+
+		@SuppressWarnings("unchecked")
+		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
+
+		String result = "success";
+		ActionMessages errors = new ActionMessages();
+
+		// バリデーション
+		if(req.getParameter("selectList").isEmpty()) {
+			errors.add("delete",new ActionMessage("errors.required.select","貸出/返却対象"));
+			result = "error";
+		}
+
+		if(result != "error") {
+			List<String> selectList = Arrays.asList(req.getParameter("selectList").split(","));
+
+			Map<String,Stock> volumeMap = convertMap(stockList);
+
+			Integer nowStatus = null;
+			for(String selectNo : selectList) {
+				int status = volumeMap.get(selectNo).getStatus();
+				if(nowStatus == null) {
+					nowStatus = status;
+				}
+				if(nowStatus != status) {
+					errors.add("lend",new ActionMessage("errors.lend.select"));
+					result = "error";
+					break;
+				}
+			}
+
+			if(result != "error") {
+				req.setAttribute("status",nowStatus);
+				req.setAttribute("noError","true");
+			}else {
+				req.setAttribute("noError","false");
+			}
+		}
+
+		if(result != "error") {
+			result = "detail";
+		}
+
+		detailForm.setStockList(stockList);
+
+		saveErrors(req, errors);
+
+		return (mapping.findForward(result));
+	}
+
+	//貸出返却
 	public ActionForward lend(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,

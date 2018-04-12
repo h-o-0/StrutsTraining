@@ -80,6 +80,11 @@
 
 	<script type="text/javascript">
 	$(function(){
+
+		var noError = <%= request.getAttribute("noError") %>;
+		var status = <%= request.getAttribute("status") %>;
+
+
 		$('#stockList td').click(function(){
 			if($(this).hasClass('selected')){
 				$(this).removeClass('selected');
@@ -108,9 +113,45 @@
 		//貸出返却
 		$('[name="lendBtn"]').click(function(){
 			sendSelectList();
-			$('#lendForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=lend');
+			$('#lendForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=validate');
 			$('#lendForm').submit();
 		});
+
+		//確認ポップアップ
+		if(noError == 'true'){
+			if(status == '0'){
+				//返却
+				var msg =
+					'以下を返却します。よろしいですか？\n'
+					+ '\n'
+					+ 'タイトル：' + $('h3').text() + '\n'
+					+ '巻数' + $('[name="selectList"]').val();
+
+				if(window.confirm(msg)){
+					//登録処理
+					$('#lendForm').attr('action','<%= request.getContextPath() %>/detail.do?method=lend');
+					$('#lendForm').submit();
+				}
+			}else{
+				//貸出
+				var msg =
+					'以下を貸出します。よろしいですか？\n'
+					+ '\n'
+					+ 'タイトル：' + $('h3').text() + '\n'
+					+ '巻数' + $('[name="selectList"]').val() + '\n'
+					+ '\n'
+					+ 'ツールチップに表示するコメントを入力してください\n';
+
+				loan_comment = window.prompt(msg,"");
+
+				if(loan_comment != 'null'){
+					//登録処理
+					$('#lendForm').attr('action','<%= request.getContextPath() %>/detail.do?method=lend');
+					$('#lendForm').submit();
+				}
+			}
+
+		}
 
 		function getSelectList() {
 			var selectList = new Array();

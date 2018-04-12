@@ -67,12 +67,12 @@
 	<script type="text/javascript">
 	$(function(){
 
+		var noError = <%= request.getAttribute("noError") %>;
+		var registComplete = <%= request.getAttribute("registComplete") %>;
+
 		$('[name="toMain"]').on('click', function(){
 			location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
 		});
-
-		var noError = <%= request.getAttribute("noError") %>;
-		var registComplete = <%= request.getAttribute("registComplete") %>;
 
 		if(noError && !registComplete){
 			var registMsg =
