@@ -20,11 +20,7 @@
       <forward name="error" path="/view/main/login.jsp"/>
     </action>
     <action path="/add" forward="/add" type="main.action.AddAction" input="error" name="AddForm" scope="request" validate="true" parameter="method">
-<<<<<<< Upstream, based on origin/master
-      <forward name="success" path="/view/main/detail.jsp" redirect="true"/>
-=======
       <forward name="success" path="/detail.do" redirect="true"/>
->>>>>>> a11c6cb ツールチップ途中
       <forward name="add" path="/view/main/add.jsp"/>
       <forward name="error" path="/view/main/add.jsp"/>
     </action>

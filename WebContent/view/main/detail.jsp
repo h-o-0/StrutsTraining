@@ -40,12 +40,19 @@
 						<tr>
 					</logic:equal>
 
-					<logic:equal name="stockList" property="status" value="0">
-						<td class="noStock"><bean:write name="stockList" property="volume"/><span class="tooltip">コメントなし</span></td>
-					</logic:equal>
-					<logic:notEqual name="stockList" property="status" value="0">
-						<td class="stock"><bean:write name="stockList" property="volume"/><span class="tooltip">コメントなし</span></td>
-					</logic:notEqual>
+						<logic:equal name="stockList" property="status" value="0">
+							<td class="noStock">
+						</logic:equal>
+						<logic:notEqual name="stockList" property="status" value="0">
+							<td class="stock">
+						</logic:notEqual>
+
+							<bean:write name="stockList" property="volume"/>
+
+							<logic:notEqual name="stockList" property="loan_comment" value="">
+								<span class="tooltip"><bean:write name="stockList" property="loan_comment"/></span>
+							</logic:notEqual>
+						</td>
 
 					<logic:equal name="index" value="<%= String.valueOf(endNum) %>">
 						</tr>
@@ -85,7 +92,7 @@
 		var status = <%= request.getAttribute("status") %>;
 
 		//初期表示：選択中のものをグレーにする
-		$('#stockList td').eq(parseInt($('[name="selectList"]').val())-1).addClass('selected');
+		getSelectList();
 
 		$('#stockList td').click(function(){
 			if($(this).hasClass('selected')){
@@ -155,20 +162,20 @@
 		}
 
 		function getSelectList() {
-			var selectList = new Array();
-			$('#stockList td').each(function(){
-				if($(this).hasClass('selected')){
-					selectList.push($(this).text());
-				}
+			var selectList = $('[name="selectList"]').val().split(',');
+			if(selectList[0] == ''){
+				return;
+			}
+			$.each(selectList,function(index,value){
+				$('#stockList td').eq(value-1).addClass('selected');
 			});
-			selectList = selectList.join(',');
-			$('[name="selectList"]').val(selectList);
 		}
+
 		function sendSelectList() {
 			var selectList = new Array();
 			$('#stockList td').each(function(){
 				if($(this).hasClass('selected')){
-					selectList.push($(this).text());
+					selectList.push($.trim($(this).text()));
 				}
 			});
 			selectList = selectList.join(',');

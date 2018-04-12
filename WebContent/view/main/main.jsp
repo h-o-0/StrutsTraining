@@ -58,7 +58,7 @@
 				<html:hidden property="publisher" />
 				<html:hidden property="author" />
 				<html:hidden property="isNewBook" value="true" />
-				<html:submit property="editBtn" value="追加" />
+				<html:submit property="editBtn" value="追加/編集" />
 			</html:form>
 		</div>
 	</div>
