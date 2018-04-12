@@ -89,7 +89,9 @@
 	<script type="text/javascript">
 	$(function(){
 
-		var noError = <%= request.getAttribute("noError") %>;
+		var deleteCheck = <%= request.getAttribute("deleteCheck") %>;
+		var lendCheck = <%= request.getAttribute("lendCheck") %>;
+		var registComplete = <%= request.getAttribute("registComplete") %>;
 		var status = <%= request.getAttribute("status") %>;
 
 		//初期表示：選択中のものをグレーにする
@@ -110,7 +112,7 @@
 		//削除
 		$('[name="deleteBtn"]').click(function(){
 			sendSelectList();
-			$('#deleteForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=delete');
+			$('#deleteForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=deleteCheck');
 			$('#deleteForm').submit();
 		});
 
@@ -123,12 +125,37 @@
 		//貸出返却
 		$('[name="lendBtn"]').click(function(){
 			sendSelectList();
-			$('#lendForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=validate');
+			$('#lendForm').attr('action', '<%= request.getContextPath() %>/detail.do?method=lendCheck');
 			$('#lendForm').submit();
 		});
 
-		//確認ポップアップ
-		if(noError){
+		//削除ポップアップ
+		if(deleteCheck){
+			var status = '';
+
+			$('.selected').each(function(){
+				if($(this).hasClass('noStock')){
+					status = '貸出状態の巻が選択されています';
+				}
+			});
+
+			var msg =
+				'以下の巻数情報、貸出状況を削除します。\n'
+				+ 'よろしいですか？\n'
+				+ '\n'
+				+ 'タイトル：' + $('h3').text() + '\n'
+				+ '巻数：' + $('[name="selectList"]').val() + '巻\n'
+				+ status;
+
+			if(window.confirm(msg)){
+				//登録処理
+				$('#deleteForm').attr('action','<%= request.getContextPath() %>/detail.do?method=delete');
+				$('#deleteForm').submit();
+			}
+		}
+
+		//返却ポップアップ
+		if(lendCheck){
 			if(status == '0'){
 				//返却
 				var msg =
@@ -161,6 +188,12 @@
 					$('#lendForm').submit();
 				}
 			}
+		}
+
+		//処理完了ポップアップ
+		if(registComplete){
+			alert('処理が終了しました');
+			location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
 		}
 
 		function getSelectList() {
