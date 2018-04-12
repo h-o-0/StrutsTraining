@@ -41,10 +41,10 @@
 					</logic:equal>
 
 						<logic:equal name="stockList" property="status" value="0">
-							<td class="noStock">
+							<td class="noStock" id='<bean:write name="stockList" property="id"/>'>
 						</logic:equal>
 						<logic:notEqual name="stockList" property="status" value="0">
-							<td class="stock">
+							<td class="stock" id='<bean:write name="stockList" property="id"/>'>
 						</logic:notEqual>
 
 							<bean:write name="stockList" property="volume"/>
@@ -202,7 +202,7 @@
 				return;
 			}
 			$.each(selectList,function(index,value){
-				$('#stockList td').eq(value-1).addClass('selected');
+				$('#stockList td#'+value).addClass('selected');
 			});
 		}
 
@@ -210,7 +210,7 @@
 			var selectList = new Array();
 			$('#stockList td').each(function(){
 				if($(this).hasClass('selected')){
-					selectList.push($.trim($(this).text()));
+					selectList.push($(this).attr('id'));
 				}
 			});
 			selectList = selectList.join(',');
