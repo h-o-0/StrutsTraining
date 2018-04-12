@@ -54,7 +54,7 @@
     <!-- UPDATE -->
     <update id="updateLibrary" parameterClass="ibatis.dto.Library">
         UPDATE pelibrary.library
-        SET title = #title#
+        SET title = #title#, PUBLISHER = #publisher#, AUTHOR = #author#
         WHERE id = #id#
     </update>
 

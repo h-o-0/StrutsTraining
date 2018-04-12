@@ -12,6 +12,7 @@ public class DetailForm extends ActionForm {
 	private List<Stock> stockList = new ArrayList<Stock>();
 	private String selectList;
 	private String id;
+	private String loan_comment;
 	private Library library;
 
 	public List<Stock> getStockList() {
@@ -36,6 +37,14 @@ public class DetailForm extends ActionForm {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getLoan_comment() {
+		return loan_comment;
+	}
+
+	public void setLoan_comment(String loan_comment) {
+		this.loan_comment = loan_comment;
 	}
 
 	public Library getLibrary() {

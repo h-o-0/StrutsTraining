@@ -21,6 +21,12 @@ public class EditAction extends DispatchAction {
 			ActionForm form,
 			HttpServletRequest req,
 			HttpServletResponse res) {
+
+		String id = req.getParameter("id");
+
+		System.out.println(id);
+
+
 		return (mapping.findForward("success"));
 	}
 
@@ -58,13 +64,6 @@ public class EditAction extends DispatchAction {
 
 		saveErrors(req, errors);
 
-		//TODO 登録処理：ポップアップが実装されたら移動
-		if(result != "error") {
-			Library addData = new Library(title, publisher, author);
-			DBOperationLogic.addLibrary(addData);
-		}
-
-
 		return (mapping.findForward(result));
 	}
 
@@ -73,11 +72,19 @@ public class EditAction extends DispatchAction {
 	public ActionForward insertRegist(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
-			HttpServletResponse res) {
+			HttpServletResponse res) throws SQLException {
 
 		String result = "success";
 
 		//登録処理
+		String title = req.getParameter("title");
+		String publisher = req.getParameter("publisher");
+		String author = req.getParameter("author");
+
+		if(result != "error") {
+			Library addData = new Library(title, publisher, author);
+			DBOperationLogic.addLibrary(addData);
+		}
 
 		if(result.equals("success")) {
 			req.setAttribute("registComplete", "true");

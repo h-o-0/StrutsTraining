@@ -204,22 +204,20 @@ public class DetailAction extends DispatchAction {
 				}
 			}
 
-			//貸出返却処理
-			// TODO それぞれポップアップの処理に記載予定
-
 			// 返却
 			if(nowStatus == 0 && result != "error") {
 				for(String selectNo : selectList) {
 					sqlMap.update("updateStatusLendable", volumeMap.get(selectNo));
-					//TODO コメント消し
 				}
 			}
 
 			// 貸出
 			if(nowStatus == 1 && result != "error") {
 				for(String selectNo : selectList) {
-					sqlMap.update("updateStatusOnLoan", volumeMap.get(selectNo));
-					//TODO コメントアップデート
+
+					Stock update = volumeMap.get(selectNo);
+					update.setLoan_comment(req.getParameter("loan_comment"));
+					sqlMap.update("updateStatusOnLoan", update);
 				}
 			}
 
