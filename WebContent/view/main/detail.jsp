@@ -41,10 +41,10 @@
 					</logic:equal>
 
 					<logic:equal name="stockList" property="status" value="0">
-						<td class="noStock"><bean:write name="stockList" property="volume"/></td>
+						<td class="noStock"><bean:write name="stockList" property="volume"/><span class="tooltip">コメントなし</span></td>
 					</logic:equal>
 					<logic:notEqual name="stockList" property="status" value="0">
-						<td class="stock"><bean:write name="stockList" property="volume"/></td>
+						<td class="stock"><bean:write name="stockList" property="volume"/><span class="tooltip">コメントなし</span></td>
 					</logic:notEqual>
 
 					<logic:equal name="index" value="<%= String.valueOf(endNum) %>">
@@ -84,6 +84,8 @@
 		var noError = <%= request.getAttribute("noError") %>;
 		var status = <%= request.getAttribute("status") %>;
 
+		//初期表示：選択中のものをグレーにする
+		$('#stockList td').eq(parseInt($('[name="selectList"]').val())-1).addClass('selected');
 
 		$('#stockList td').click(function(){
 			if($(this).hasClass('selected')){
@@ -118,14 +120,14 @@
 		});
 
 		//確認ポップアップ
-		if(noError == 'true'){
+		if(noError){
 			if(status == '0'){
 				//返却
 				var msg =
 					'以下を返却します。よろしいですか？\n'
 					+ '\n'
 					+ 'タイトル：' + $('h3').text() + '\n'
-					+ '巻数' + $('[name="selectList"]').val();
+					+ '巻数：' + $('[name="selectList"]').val() + '巻';
 
 				if(window.confirm(msg)){
 					//登録処理
@@ -138,19 +140,18 @@
 					'以下を貸出します。よろしいですか？\n'
 					+ '\n'
 					+ 'タイトル：' + $('h3').text() + '\n'
-					+ '巻数' + $('[name="selectList"]').val() + '\n'
+					+ '巻数：' + $('[name="selectList"]').val() + '巻\n'
 					+ '\n'
 					+ 'ツールチップに表示するコメントを入力してください\n';
 
 				loan_comment = window.prompt(msg,"");
 
-				if(loan_comment != 'null'){
+				if(loan_comment != null){
 					//登録処理
 					$('#lendForm').attr('action','<%= request.getContextPath() %>/detail.do?method=lend');
 					$('#lendForm').submit();
 				}
 			}
-
 		}
 
 		function getSelectList() {

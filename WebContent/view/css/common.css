@@ -79,12 +79,30 @@ p {
 }
 
 #stockList td {
+	position:relative;
 	width:61px;
 	height:30px;
 	border:1px solid #333;
 	text-align:center;
 	vertical-align:middle;
 	cursor:pointer;
+}
+
+#stockList td .tooltip {
+	display:none;
+}
+
+#stockList td:hover .tooltip {
+	display:block;
+	position:absolute;
+	top:25px;
+	padding:5px;
+	width:max-content;
+	max-width:200px;
+	color:#000;
+	background:#ff0;
+	text-align:left;
+	z-index:100;
 }
 
 #libraryDetail {
