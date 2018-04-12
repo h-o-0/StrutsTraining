@@ -26,6 +26,7 @@
 			<html:submit property="searchBtn" value="検索" />
 		</div>
 		<div id="searchResultWrapper">
+			<html:errors property="delete"/>
 			<table id="searchResult">
 				<thead>
 					<tr>
@@ -52,6 +53,10 @@
 		</div>
 		</html:form>
 		<div class="btnWrapper">
+			<html:form action="/delete?method=deleteCheck">
+				<html:hidden property="id" />
+				<html:submit property="deleteBtn" value="削除" />
+			</html:form>
 			<html:form action="/edit" styleClass="rightBtn">
 				<html:hidden property="id" />
 				<html:hidden property="title" />
@@ -66,6 +71,9 @@
 
 	<script type="text/javascript">
 	$(function(){
+		var deleteCheck = <%= request.getAttribute("deleteCheck") %>;
+		var registComplete = <%= request.getAttribute("registComplete") %>;
+
 		//チェックボックスを択一にする
 		$('#searchResultWrapper').find('[name="selectBook"]').click(function(){
 			if($(this).prop('checked')){
@@ -74,6 +82,17 @@
 			}
 		});
 
+		//削除
+		$('[name="deleteBtn"]').click(function(){
+			for(var i=0; i<document.SearchForm.selectBook.length; i++){
+				if(document.SearchForm.selectBook[i].checked){
+					$('[name="DeleteForm"] [name="id"]').val($('[name="id"]:eq('+i+')').val());
+					break;
+				}
+			}
+		});
+
+		//追加編集
 		$('[name="editBtn"]').click(function(){
 			for(var i=0; i<document.SearchForm.selectBook.length; i++){
 				if(document.SearchForm.selectBook[i].checked){
@@ -87,6 +106,39 @@
 				}
 			}
 		});
+
+		//削除ポップアップ
+		if(deleteCheck){
+			var id = $('[name="DeleteForm"] [name="id"]').val();
+			var title;
+			var publisher;
+			var author;
+			$('[name="SearchForm"] [name="id"]').each(function(){
+				if($(this).val() == id){
+					var parent = $(this).parents('tr');
+					title = parent.children('.title').text();
+					publisher = parent.children('.publisher').text();
+					author = parent.children('.author').text();
+				}
+			});
+
+			var msg = '以下を削除します。よろしいですか？\n'
+			+ 'また、紐付く巻数情報、貸出状況も削除されます\n'
+			+ '\n'
+			+ 'タイトル：' + title + '\n'
+			+ '出版社：' + publisher + '\n'
+			+ '著者:' + author;
+
+			if(window.confirm(msg)){
+				$('[name="DeleteForm"]').attr('action','<%= request.getContextPath() %>/delete.do?method=delete');
+				$('[name="DeleteForm"]').submit();
+			}
+		}
+
+		if(registComplete){
+			alert('処理が終了しました');
+			location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
+		}
 	});
 	</script>
 </body>
