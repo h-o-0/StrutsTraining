@@ -78,6 +78,7 @@
 				<html:form action="/detail" styleId="lendForm">
 					<html:hidden property="selectList"/>
 					<html:hidden property="id"/>
+					<html:hidden property="loan_comment"/>
 					<html:submit property="lendBtn" value="貸出/返却" />
 					</html:form>
 			</div>
@@ -182,6 +183,7 @@
 
 				if(loan_comment != null){
 					//登録処理
+					$('[name="loan_comment"]').val(loan_comment);
 					$('#lendForm').attr('action','<%= request.getContextPath() %>/detail.do?method=lend');
 					$('#lendForm').submit();
 				}
