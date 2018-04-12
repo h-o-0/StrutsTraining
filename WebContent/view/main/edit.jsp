@@ -83,7 +83,7 @@
 				+ '出版社：' + $('[name="publisher"]').val() + '\n'
 				+ '著者：' + $('[name="author"]').val();
 
-			if($('[name="isNewBook"]') == 'true'){
+			if($('[name="isNewBook"]').val() == 'true'){
 				document.EditForm.action = '<%= request.getContextPath() %>/edit.do?method=insertRegist';
 			}else{
 				document.EditForm.action = '<%= request.getContextPath() %>/edit.do?method=updateRegist';
