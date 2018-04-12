@@ -84,7 +84,7 @@ public class DBOperationLogic {
 	 * @param volume　巻数 ([数字]-[数字]なら複数登録)
 	 * @throws SQLException
 	 */
-	private static void addStock(int id ,String volume) throws SQLException {
+	public static void addStock(int id ,String volume) throws SQLException {
 
 		Library libraryData = (Library)sqlMap.queryForObject("getLibrary", id);
 
@@ -93,7 +93,7 @@ public class DBOperationLogic {
 			Integer startNo = Integer.parseInt(volumes[0]);
 			Integer endNo = Integer.parseInt(volumes[1]);
 
-			for(int i=startNo;i<endNo;i++) {
+			for(int i=startNo;i<=endNo;i++) {
 				Stock insertData = new Stock(id, libraryData.getTitle(), String.valueOf(i));
 				sqlMap.insert("insertStock", insertData);
 			}
