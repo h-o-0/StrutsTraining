@@ -53,6 +53,13 @@
         WHERE parent_id = #parent_id# AND VOLUME = #volume#
     </delete>
 
+     <!-- 親IDを指定し、物理削除します -->
+    <delete id="parentDeleteStock" parameterClass="int">
+        DELETE
+        FROM pelibrary.stock
+        WHERE parent_id = #VALUE#
+    </delete>
+
     <!-- INSERT -->
     <insert id="insertStock" parameterClass="ibatis.dto.Stock">
         INSERT INTO pelibrary.stock (

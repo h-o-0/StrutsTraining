@@ -41,11 +41,12 @@ public class DetailAction extends DispatchAction {
 		detailForm.setLibrary(library);
 
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
+		List<Stock> stockList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
+				Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setStockList(stockList);
 
-		return (mapping.findForward("detail"));
+		return (mapping.findForward("success"));
 	}
 
 	//削除
@@ -64,7 +65,8 @@ public class DetailAction extends DispatchAction {
 		detailForm.setLibrary(library);
 
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
+		List<Stock> stockList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
+				Integer.parseInt(req.getParameter("id")));
 		Map<String,Stock> volumeMap = convertMap(stockList);
 
 		String result = "success";
@@ -81,12 +83,21 @@ public class DetailAction extends DispatchAction {
 			for(String selectNo : Arrays.asList(req.getParameter("selectList").split(","))) {
 				sqlMap.delete("deleteStock", volumeMap.get(selectNo));
 			}
+		}
 
-
+		if (result.equals("success")) {
+			req.setAttribute("registComplete", "true");
+		} else {
+			req.setAttribute("registComplete", "false");
 		}
 
 		@SuppressWarnings("unchecked")
-		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
+		List<Stock> updateList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
+				Integer.parseInt(req.getParameter("id")));
+
+		if(updateList == null) {
+			sqlMap.delete("deleteLibrary", volumeMap.get(req.getParameter("id")));
+		}
 
 		detailForm.setStockList(updateList);
 
@@ -95,8 +106,8 @@ public class DetailAction extends DispatchAction {
 		return (mapping.findForward(result));
 	}
 
-	//貸出返却
-	public ActionForward validate(ActionMapping mapping,
+	//貸出返却チェック
+	public ActionForward lendCheck(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
 			HttpServletResponse res) throws SQLException {
@@ -111,7 +122,8 @@ public class DetailAction extends DispatchAction {
 		detailForm.setLibrary(library);
 
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
+		List<Stock> stockList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
+				Integer.parseInt(req.getParameter("id")));
 
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
@@ -142,14 +154,14 @@ public class DetailAction extends DispatchAction {
 
 			if(result != "error") {
 				req.setAttribute("status",nowStatus);
-				req.setAttribute("noError","true");
+				req.setAttribute("lendCheck", "true");
 			}else {
-				req.setAttribute("noError","false");
+				req.setAttribute("lendCheck", "false");
 			}
 		}
 
 		if(result != "error") {
-			result = "detail";
+			result = "success";
 		}
 
 		detailForm.setStockList(stockList);
@@ -175,7 +187,8 @@ public class DetailAction extends DispatchAction {
 		detailForm.setLibrary(library);
 
 		@SuppressWarnings("unchecked")
-		List<Stock> stockList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
+		List<Stock> stockList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
+				Integer.parseInt(req.getParameter("id")));
 
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
@@ -223,8 +236,15 @@ public class DetailAction extends DispatchAction {
 
 		}
 
+		if (result.equals("success")) {
+			req.setAttribute("registComplete", "true");
+		} else {
+			req.setAttribute("registComplete", "false");
+		}
+
 		@SuppressWarnings("unchecked")
-		List<Stock> updateList = (List<Stock>)sqlMap.queryForList("getStockDataEachTitle", Integer.parseInt(req.getParameter("id")));
+		List<Stock> updateList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
+				Integer.parseInt(req.getParameter("id")));
 
 		detailForm.setStockList(updateList);
 

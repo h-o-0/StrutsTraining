@@ -105,4 +105,29 @@ public class DBOperationLogic {
 		}
 	}
 
+	/**
+	 * 書籍情報、巻数情報を編集します
+	 * @param editData 書籍情報
+	 * @throws SQLException
+	 */
+	public static void editLibrary(Library editData) throws SQLException {
+
+		sqlMap.update("updateLibrary", editData);
+		Stock editStock = new Stock(editData.getId(), editData.getTitle());
+		sqlMap.update("updateTitle", editStock);
+
+	}
+
+	/**
+	 * 書籍情報、巻数情報を削除します
+	 * @param id 削除対象id
+	 * @throws SQLException
+	 */
+	public static void deleteLibrary(int id) throws SQLException {
+
+		sqlMap.update("deleteLibrary", id);
+		sqlMap.update("parentDeleteStock", id);
+
+	}
+
 }
