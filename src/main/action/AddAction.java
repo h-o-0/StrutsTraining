@@ -18,6 +18,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 
 import ibatis.MyAppSqlConfig;
 import ibatis.dto.Library;
+import logic.DBOperationLogic;
 import main.form.AddForm;
 
 public class AddAction extends DispatchAction {
@@ -69,6 +70,10 @@ public class AddAction extends DispatchAction {
 		}
 
 		saveErrors(req, errors);
+
+		if(result != "error") {
+			DBOperationLogic.addStock(library.getId(), volume);
+		}
 
 		return (mapping.findForward(result));
 	}
