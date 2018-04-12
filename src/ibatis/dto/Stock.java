@@ -18,6 +18,10 @@ public class Stock {
 
     }
 
+    public Stock(int parent_id, String title) {
+		this(0, parent_id, title, "1", 1, null);
+	}
+
     public Stock(int parent_id, String title, String volume) {
 		this(0, parent_id, title, volume, 1, null);
 	}
