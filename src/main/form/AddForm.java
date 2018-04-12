@@ -6,7 +6,7 @@ import ibatis.dto.Library;
 
 public class AddForm extends ActionForm {
 	private String id;
-	private Library library;
+	private Library library = new Library();
 	private String volume;
 
 	public String getId() {

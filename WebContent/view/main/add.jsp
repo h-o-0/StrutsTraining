@@ -50,7 +50,7 @@
 				</html:form>
 				<html:form action="/add?method=regist" styleClass="rightBtn">
 					<html:hidden name="AddForm" property="id" />
-					<html:hidden property="volume" />
+					<html:hidden name="AddForm" property="volume" />
 					<html:submit property="submitBtn" value="登録" />
 				</html:form>
 			</div>

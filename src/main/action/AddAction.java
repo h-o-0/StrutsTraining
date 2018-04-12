@@ -11,7 +11,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.ActionRedirect;
 import org.apache.struts.actions.DispatchAction;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
@@ -66,10 +65,7 @@ public class AddAction extends DispatchAction {
 
 		saveErrors(req, errors);
 
-		ActionRedirect actionRedirect = new ActionRedirect(mapping.findForward(result));
-		actionRedirect.addParameter("id", req.getParameter("id"));
-
-		return (actionRedirect);
+		return (mapping.findForward(result));
 	}
 
 	private boolean volumeCheck (String volume) {
