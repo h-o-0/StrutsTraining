@@ -65,12 +65,12 @@
 		<div class="btnWrapper">
 			<html:button property="toMain" value="戻る" />
 			<div class="rightBtn">
-				<html:form action="/detail" styleId="deleteForm">
+				<html:form action="/detail" styleId="deleteForm" styleClass="adminOnly">
 					<html:hidden property="selectList"/>
 					<html:hidden property="id"/>
 					<html:submit property="deleteBtn" value="削除" />
 				</html:form>
-				<html:form action="/add" styleId="addForm">
+				<html:form action="/add" styleId="addForm" styleClass="adminOnly">
 					<html:hidden name="DetailForm" property="id"/>
 					<html:hidden property="volume"/>
 					<html:submit property="addBtn" value="追加" />
@@ -88,7 +88,7 @@
 
 	<script type="text/javascript">
 	$(function(){
-
+		var userId = '<%= session.getAttribute("userId") %>';
 		var deleteCheck = <%= request.getAttribute("deleteCheck") %>;
 		var lendCheck = <%= request.getAttribute("lendCheck") %>;
 		var registComplete = <%= request.getAttribute("registComplete") %>;
@@ -96,6 +96,11 @@
 
 		//初期表示：選択中のものをグレーにする
 		getSelectList();
+
+		//adminのみ表示
+		if(userId == 'admin'){
+			$('.adminOnly').show();
+		}
 
 		$('#stockList td').click(function(){
 			if($(this).hasClass('selected')){
@@ -156,13 +161,16 @@
 
 		//返却ポップアップ
 		if(lendCheck){
+
+			var selectVolumeList = getSelectVolumeList();
+
 			if(status == '0'){
 				//返却
 				var msg =
 					'以下を返却します。よろしいですか？\n'
 					+ '\n'
 					+ 'タイトル：' + $('h3').text() + '\n'
-					+ '巻数：' + $('[name="selectList"]').val() + '巻';
+					+ '巻数：' + selectVolumeList + '巻';
 
 				if(window.confirm(msg)){
 					//登録処理
@@ -175,7 +183,7 @@
 					'以下を貸出します。よろしいですか？\n'
 					+ '\n'
 					+ 'タイトル：' + $('h3').text() + '\n'
-					+ '巻数：' + $('[name="selectList"]').val() + '巻\n'
+					+ '巻数：' + selectVolumeList + '巻\n'
 					+ '\n'
 					+ 'ツールチップに表示するコメントを入力してください\n';
 
@@ -215,6 +223,19 @@
 			});
 			selectList = selectList.join(',');
 			$('[name="selectList"]').val(selectList);
+		}
+
+		function getSelectVolumeList() {
+			var selectVolumeList = new Array();
+			var selectIdList = $('[name="selectList"]').val().split(',');
+			if(selectIdList[0] == ''){
+				return '';
+			}
+			$.each(selectIdList,function(index,value){
+				selectVolumeList.push($.trim($('#stockList td#'+value).text()));
+			});
+
+			return selectVolumeList.join(',');
 		}
 	});
 	</script>

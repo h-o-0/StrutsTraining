@@ -147,6 +147,10 @@ a:visited {
 	display:inline-block;
 }
 
+form.adminOnly {
+	display:none;
+}
+
 .error {
 	color:#f00;
 }

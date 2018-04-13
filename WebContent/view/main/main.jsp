@@ -53,11 +53,11 @@
 		</div>
 		</html:form>
 		<div class="btnWrapper">
-			<html:form action="/delete?method=deleteCheck">
+			<html:form action="/delete?method=deleteCheck" styleClass="adminOnly">
 				<html:hidden property="id" />
 				<html:submit property="deleteBtn" value="削除" />
 			</html:form>
-			<html:form action="/edit" styleClass="rightBtn">
+			<html:form action="/edit" styleClass="rightBtn adminOnly">
 				<html:hidden property="id" />
 				<html:hidden property="title" />
 				<html:hidden property="volume" />
@@ -71,6 +71,7 @@
 
 	<script type="text/javascript">
 	$(function(){
+		var userId = '<%= session.getAttribute("userId") %>';
 		var deleteCheck = <%= request.getAttribute("deleteCheck") %>;
 		var registComplete = <%= request.getAttribute("registComplete") %>;
 
@@ -81,6 +82,11 @@
 				$(this).prop('checked',true);
 			}
 		});
+
+		//adminのみ表示
+		if(userId == 'admin'){
+			$('.adminOnly').show();
+		}
 
 		//削除
 		$('[name="deleteBtn"]').click(function(){

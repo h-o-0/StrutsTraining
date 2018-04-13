@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -15,6 +16,7 @@ import org.apache.struts.action.ActionMessages;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import data.UserData;
 import ibatis.MyAppSqlConfig;
 import ibatis.dto.User;
 
@@ -31,7 +33,7 @@ public class LoginAction extends Action {
 		// ibatis
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		User user = (User) sqlMap.queryForObject("getUser", "testuser");
+		User user = (User) sqlMap.queryForObject("getUser", req.getParameter("userId"));
 
 		if(req.getParameter("userId").isEmpty()) {
 			errors.add("userId",new ActionMessage("errors.required","ユーザID"));
@@ -49,6 +51,16 @@ public class LoginAction extends Action {
 		} else if (result != "error" && !user.getPassward().equals(req.getParameter("password"))) {
 			errors.add("password",new ActionMessage("errors.invalid","パスワード"));
 			result = "error";
+		}
+
+		if(result != "error") {
+			UserData userData = new UserData(req.getParameter("userId"),req.getParameter("password"));
+			HttpSession session = req.getSession();
+
+			session.invalidate();
+			session = req.getSession(true);
+
+			session.setAttribute("userId", userData.getUserid());
 		}
 
 		saveErrors(req, errors);
