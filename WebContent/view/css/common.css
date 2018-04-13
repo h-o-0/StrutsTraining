@@ -12,6 +12,7 @@ input:not([type=button]):not([type=submit]):not([type=checkbox]){
 table {
 	border-collapse:collapse;
 	border-spacing:0;
+	word-break:break-all;
 }
 
 td {

@@ -60,6 +60,10 @@ public class DetailAction extends DispatchAction {
 		// 押下時にDBアクセス (表示データが最新とは限らない為)
 		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
+		Library library =  (Library)sqlMap.queryForObject("getLibrary",Integer.parseInt(req.getParameter("id")));
+
+		detailForm.setLibrary(library);
+
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
 
