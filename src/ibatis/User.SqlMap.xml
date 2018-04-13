@@ -9,7 +9,8 @@
     <select id="getUser" parameterClass="String" resultClass="ibatis.dto.User">
         SELECT
             ID,
-            PASSWORD
+            PASSWORD,
+            ADMIN
         FROM
             pelibrary.userdata
         WHERE
