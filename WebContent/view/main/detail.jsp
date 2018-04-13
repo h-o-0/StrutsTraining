@@ -47,7 +47,7 @@
 							<td class="stock" id='<bean:write name="stockList" property="id"/>'>
 						</logic:notEqual>
 
-							<bean:write name="stockList" property="volume"/>
+							<span class="volume"><bean:write name="stockList" property="volume"/></span>
 
 							<logic:notEqual name="stockList" property="loan_comment" value="">
 								<span class="tooltip"><bean:write name="stockList" property="loan_comment"/></span>
@@ -123,7 +123,7 @@
 
 		//追加
 		$('[name="addBtn"]').click(function(){
-			$('[name="volume"]').val($('#stockList td').length() + 1);
+			$('[name="volume"]').val($('#stockList td').length + 1);
 			$('#addForm').submit();
 		});
 
@@ -234,7 +234,7 @@
 				return '';
 			}
 			$.each(selectIdList,function(index,value){
-				selectVolumeList.push($.trim($('#stockList td#'+value).text()));
+				selectVolumeList.push($.trim($('#stockList td#'+value+' .volume').text()));
 			});
 
 			return selectVolumeList.join(',');
