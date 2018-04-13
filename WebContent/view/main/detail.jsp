@@ -138,6 +138,8 @@
 		if(deleteCheck){
 			var status = '';
 
+			var selectVolumeList = getSelectVolumeList();
+
 			$('.selected').each(function(){
 				if($(this).hasClass('noStock')){
 					status = '貸出状態の巻が選択されています';
@@ -149,7 +151,7 @@
 				+ 'よろしいですか？\n'
 				+ '\n'
 				+ 'タイトル：' + $('h3').text() + '\n'
-				+ '巻数：' + $('[name="selectList"]').val() + '巻\n'
+				+ '巻数：' + selectVolumeList + '巻\n'
 				+ status;
 
 			if(window.confirm(msg)){
