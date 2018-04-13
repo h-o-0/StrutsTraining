@@ -85,7 +85,7 @@
 
 		//adminのみ表示
 		if(userId == 'admin'){
-			$('.adminOnly').show();
+			$('.adminOnly').addClass('show');
 		}
 
 		//削除

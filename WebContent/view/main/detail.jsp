@@ -99,7 +99,7 @@
 
 		//adminのみ表示
 		if(userId == 'admin'){
-			$('.adminOnly').show();
+			$('.adminOnly').addClass('show');
 		}
 
 		$('#stockList td').click(function(){

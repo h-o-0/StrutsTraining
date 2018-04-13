@@ -151,6 +151,10 @@ form.adminOnly {
 	display:none;
 }
 
+form.adminOnly.show {
+	display:inline-block;
+}
+
 .error {
 	color:#f00;
 }
