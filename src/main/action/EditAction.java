@@ -22,11 +22,6 @@ public class EditAction extends DispatchAction {
 			HttpServletRequest req,
 			HttpServletResponse res) {
 
-		String id = req.getParameter("id");
-
-		System.out.println(id);
-
-
 		return (mapping.findForward("success"));
 	}
 

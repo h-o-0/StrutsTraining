@@ -134,9 +134,9 @@ public class DetailAction extends DispatchAction {
 		List<Stock> updateList = (List<Stock>) sqlMap.queryForList("getStockDataEachTitle",
 				Integer.parseInt(req.getParameter("id")));
 
-		if(updateList == null) {
+		if(updateList.size() == 0) {
 			try {
-			sqlMap.delete("deleteLibrary", volumeMap.get(req.getParameter("id")));
+			sqlMap.delete("deleteLibrary", library.getId());
 			} catch (SQLException e) {
 				result = "error";
 			}
