@@ -19,7 +19,7 @@
 	</resultMap>
 
 	<select id="getStockDataEachTitle" parameterClass="int"  resultMap="stockmap">
-    	SELECT * FROM pelibrary.stock WHERE parent_id = #VALUE#
+    	SELECT * FROM pelibrary.stock WHERE parent_id = #VALUE# ORDER BY VOLUME + 0
 	</select>
 
     <!-- UPDATE -->
