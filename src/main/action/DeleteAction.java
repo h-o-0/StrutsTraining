@@ -51,7 +51,11 @@ public class DeleteAction extends DispatchAction {
 		ActionMessages errors = new ActionMessages();
 
 		//削除処理
-		DBOperationLogic.deleteLibrary(Integer.parseInt(req.getParameter("id")));
+		try {
+			DBOperationLogic.deleteLibrary(Integer.parseInt(req.getParameter("id")));
+		} catch (SQLException e) {
+			result = "error";
+		}
 
 		if (result.equals("success")) {
 			req.setAttribute("registComplete", "true");

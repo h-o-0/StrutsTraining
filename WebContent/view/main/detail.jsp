@@ -88,7 +88,7 @@
 
 	<script type="text/javascript">
 	$(function(){
-		var userId = '<%= session.getAttribute("userId") %>';
+		var admin = '<%= session.getAttribute("admin") %>';
 		var deleteCheck = <%= request.getAttribute("deleteCheck") %>;
 		var lendCheck = <%= request.getAttribute("lendCheck") %>;
 		var registComplete = <%= request.getAttribute("registComplete") %>;
@@ -98,7 +98,7 @@
 		getSelectList();
 
 		//adminのみ表示
-		if(userId == 'admin'){
+		if(admin == 1){
 			$('.adminOnly').addClass('show');
 		}
 

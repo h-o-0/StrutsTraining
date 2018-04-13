@@ -71,7 +71,7 @@
 
 	<script type="text/javascript">
 	$(function(){
-		var userId = '<%= session.getAttribute("userId") %>';
+		var admin = '<%= session.getAttribute("admin") %>';
 		var deleteCheck = <%= request.getAttribute("deleteCheck") %>;
 		var registComplete = <%= request.getAttribute("registComplete") %>;
 
@@ -84,7 +84,7 @@
 		});
 
 		//adminのみ表示
-		if(userId == 'admin'){
+		if(admin == 1){
 			$('.adminOnly').addClass('show');
 		}
 

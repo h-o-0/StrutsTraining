@@ -94,7 +94,7 @@ public class DetailAction extends DispatchAction {
 	public ActionForward delete(ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest req,
-			HttpServletResponse res) throws SQLException {
+			HttpServletResponse res) throws NumberFormatException, SQLException  {
 
 		DetailForm detailForm = (DetailForm)form;
 
@@ -113,15 +113,14 @@ public class DetailAction extends DispatchAction {
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
 
-		if(req.getParameter("selectList").isEmpty()) {
-			errors.add("delete",new ActionMessage("errors.required.select","削除対象"));
-			result = "error";
-		}
-
 		//削除処理
 		if(result != "error") {
 			for(String selectNo : Arrays.asList(req.getParameter("selectList").split(","))) {
-				sqlMap.delete("deleteStock", volumeMap.get(selectNo));
+				try {
+					sqlMap.delete("deleteStock", volumeMap.get(selectNo));
+				} catch (SQLException e) {
+					result = "error";
+				}
 			}
 		}
 
@@ -136,7 +135,11 @@ public class DetailAction extends DispatchAction {
 				Integer.parseInt(req.getParameter("id")));
 
 		if(updateList == null) {
+			try {
 			sqlMap.delete("deleteLibrary", volumeMap.get(req.getParameter("id")));
+			} catch (SQLException e) {
+				result = "error";
+			}
 		}
 
 		detailForm.setStockList(updateList);
@@ -233,47 +236,34 @@ public class DetailAction extends DispatchAction {
 		String result = "success";
 		ActionMessages errors = new ActionMessages();
 
-		// バリデーション
-		if(req.getParameter("selectList").isEmpty()) {
-			errors.add("delete",new ActionMessage("errors.required.select","貸出/返却対象"));
-			result = "error";
+		List<String> selectList = Arrays.asList(req.getParameter("selectList").split(","));
+
+		Map<String,Stock> volumeMap = convertMap(stockList);;
+
+		int status = volumeMap.get(selectList.get(0)).getStatus();
+
+		// 返却
+		if(status == 0 && result != "error") {
+			for(String selectNo : selectList) {
+				try {
+					sqlMap.update("updateStatusLendable", volumeMap.get(selectNo));
+				} catch (SQLException e) {
+					result = "error";
+				}
+			}
 		}
 
-		if(result != "error") {
-			List<String> selectList = Arrays.asList(req.getParameter("selectList").split(","));
-
-			Map<String,Stock> volumeMap = convertMap(stockList);
-
-			Integer nowStatus = null;
-			for(String selectNo : selectList) {
-				int status = volumeMap.get(selectNo).getStatus();
-				if(nowStatus == null) {
-					nowStatus = status;
-				}
-				if(nowStatus != status) {
-					errors.add("lend",new ActionMessage("errors.lend.select"));
-					result = "error";
-					break;
-				}
-			}
-
-			// 返却
-			if(nowStatus == 0 && result != "error") {
+		// 貸出
+		if(status == 1 && result != "error") {
+			try {
 				for(String selectNo : selectList) {
-					sqlMap.update("updateStatusLendable", volumeMap.get(selectNo));
-				}
-			}
-
-			// 貸出
-			if(nowStatus == 1 && result != "error") {
-				for(String selectNo : selectList) {
-
 					Stock update = volumeMap.get(selectNo);
 					update.setLoan_comment(req.getParameter("loan_comment"));
 					sqlMap.update("updateStatusOnLoan", update);
 				}
+			} catch (SQLException e) {
+				result = "error";
 			}
-
 		}
 
 		if (result.equals("success")) {

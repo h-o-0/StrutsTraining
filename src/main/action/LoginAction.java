@@ -16,7 +16,6 @@ import org.apache.struts.action.ActionMessages;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import data.UserData;
 import ibatis.MyAppSqlConfig;
 import ibatis.dto.User;
 
@@ -54,13 +53,12 @@ public class LoginAction extends Action {
 		}
 
 		if(result != "error") {
-			UserData userData = new UserData(req.getParameter("userId"),req.getParameter("password"));
 			HttpSession session = req.getSession();
 
 			session.invalidate();
 			session = req.getSession(true);
 
-			session.setAttribute("userId", userData.getUserid());
+			session.setAttribute("admin", user.getAdmin());
 		}
 
 		saveErrors(req, errors);
