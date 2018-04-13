@@ -123,7 +123,11 @@
 
 		//追加
 		$('[name="addBtn"]').click(function(){
-			$('[name="volume"]').val($('#stockList td').length + 1);
+			var regex = new RegExp(/^[0-9]+$/);
+			var lastVolume = $('#stockList td').last().find('.volume').text();
+			if(regex.test(lastVolume)){
+				$('[name="volume"]').val(parseInt(lastVolume) + 1);
+			}
 			$('#addForm').submit();
 		});
 
