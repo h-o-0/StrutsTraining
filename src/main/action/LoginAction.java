@@ -44,7 +44,7 @@ public class LoginAction extends Action {
 			result = "error";
 		}
 
-		if(result != "error" && user.getUserid() == null) {
+		if(result != "error" && user == null) {
 			errors.add("userId",new ActionMessage("errors.notRegistrerd","ユーザID"));
 			result = "error";
 		} else if (result != "error" && !user.getPassward().equals(req.getParameter("password"))) {
