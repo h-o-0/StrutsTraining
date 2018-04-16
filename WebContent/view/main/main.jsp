@@ -16,7 +16,7 @@
 		<h3>PE本棚管理システム</h3>
 		<html:form action="/search">
 		<div id="searchFormWrapper">
-			<html:select property="searchCategory" value="title">
+			<html:select property="searchCategory">
 				<html:option value="title">タイトル</html:option>
 				<html:option value="publisher">出版社</html:option>
 				<html:option value="author">著者</html:option>
