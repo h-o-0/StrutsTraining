@@ -29,13 +29,16 @@ public class AddAction extends DispatchAction {
 			HttpServletResponse res) throws SQLException {
 		AddForm addForm = (AddForm)form;
 
-		SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
+		if(req.getParameter("id") != null) {
+			SqlMapClient sqlMap = MyAppSqlConfig.getSqlMapInstance();
 
-		Library library =  (Library)sqlMap.queryForObject("getLibrary", Integer.parseInt(req.getParameter("id")));
+			Library library =  (Library)sqlMap.queryForObject("getLibrary", Integer.parseInt(req.getParameter("id")));
 
-		addForm.setLibrary(library);
+			addForm.setLibrary(library);
 
-		addForm.setVolume(req.getParameter("volume"));
+			addForm.setVolume(req.getParameter("volume"));
+		}
+
 
 		return (mapping.findForward("add"));
 	}
