@@ -99,6 +99,13 @@
 		}
 		if(registComplete){
 			alert('処理が終了しました。');
+			if($('[name="isNewBook"]').val() == 'true'){
+				$('[name="title"]').val('');
+				$('[name="publisher"]').val('');
+				$('[name="author"]').val('');
+			}else{
+				location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
+			}
 		}
 	});
 	</script>
