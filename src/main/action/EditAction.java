@@ -41,13 +41,22 @@ public class EditAction extends DispatchAction {
 		if(title.isEmpty()) {
 			errors.add("title",new ActionMessage("errors.required","タイトル"));
 			result = "error";
+		}else if(30 < title.length()) {
+			errors.add("title",new ActionMessage("errors.length","タイトル","30"));
+			result = "error";
 		}
 		if(publisher.isEmpty()) {
 			errors.add("publisher",new ActionMessage("errors.required","出版社"));
 			result = "error";
+		}else if(30 < publisher.length()) {
+			errors.add("publisher",new ActionMessage("errors.length","出版社","30"));
+			result = "error";
 		}
 		if(author.isEmpty()) {
 			errors.add("author",new ActionMessage("errors.required","著者"));
+			result = "error";
+		}else if(30 < author.length()) {
+			errors.add("author",new ActionMessage("errors.length","著者","30"));
 			result = "error";
 		}
 

@@ -196,18 +196,27 @@
 				loan_comment = window.prompt(msg,"");
 
 				if(loan_comment != null){
-					//登録処理
-					$('[name="loan_comment"]').val(loan_comment);
-					$('#lendForm').attr('action','<%= request.getContextPath() %>/detail.do?method=lend');
-					$('#lendForm').submit();
+					if(255 < loan_comment.length){
+						alert('コメントは255文字以下で入力してください');
+						return false;
+					}else{
+						//登録処理
+						$('[name="loan_comment"]').val(loan_comment);
+						$('#lendForm').attr('action','<%= request.getContextPath() %>/detail.do?method=lend');
+						$('#lendForm').submit();
+					}
 				}
 			}
 		}
 
 		//処理完了ポップアップ
-		if(registComplete){
+		if(registComplete == true){
 			alert('処理が終了しました');
 			location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
+		}
+
+		if(registComplete == false){
+			alert('処理に失敗しました');
 		}
 
 		function getSelectList() {

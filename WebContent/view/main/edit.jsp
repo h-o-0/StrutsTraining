@@ -97,7 +97,7 @@
 				document.EditForm.action='<%= request.getContextPath() %>/edit.do?method=validate';
 			}
 		}
-		if(registComplete){
+		if(registComplete == true){
 			alert('処理が終了しました。');
 			if($('[name="isNewBook"]').val() == 'true'){
 				$('[name="title"]').val('');
@@ -106,6 +106,9 @@
 			}else{
 				location.href = '<%= request.getContextPath() %>/view/main/main.jsp';
 			}
+		}
+		if(registComplete == false){
+			alert('処理に失敗しました。');
 		}
 	});
 	</script>

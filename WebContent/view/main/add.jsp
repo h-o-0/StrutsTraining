@@ -58,9 +58,15 @@
 
 	<script type="text/javascript">
 	$(function(){
+		var registComplete = <%= request.getAttribute("registComplete") %>;
+
 		$('[name="submitBtn"]').click(function(){
 			$('[name="volume"][type="hidden"]').val($('[name="volume"]').val());
 		});
+
+		if(registComplete == false){
+			alert('処理に失敗しました。');
+		}
 	});
 	</script>
 </body>

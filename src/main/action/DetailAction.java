@@ -248,6 +248,7 @@ public class DetailAction extends DispatchAction {
 				try {
 					sqlMap.update("updateStatusLendable", volumeMap.get(selectNo));
 				} catch (SQLException e) {
+					req.setAttribute("registComplete", "false");
 					result = "error";
 				}
 			}

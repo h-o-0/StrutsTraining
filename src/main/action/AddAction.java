@@ -63,16 +63,20 @@ public class AddAction extends DispatchAction {
 		}else if(!volumeCheck(volume)) {
 			errors.add("volume",new ActionMessage("errors.volume.format"));
 			result = "error";
+		}else if(255 < volume.length()) {
+			errors.add("volume",new ActionMessage("errors.length","巻","255"));
+			result = "error";
 		}
 
 		if(result.equals("success")) {
 			try {
 				DBOperationLogic.addStock(library.getId(), volume);
+				return new RedirectingActionForward("/detail.do?id=" + req.getParameter("id"));
 			} catch (SQLException e) {
 				result = "error";
 				saveErrors(req, errors);
+				req.setAttribute("registComplete", "false");
 			}
-			return new RedirectingActionForward("/detail.do?id=" + req.getParameter("id"));
 		}
 
 		saveErrors(req, errors);
