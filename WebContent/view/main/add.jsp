@@ -35,7 +35,7 @@
 
 					<html:errors property="volume" />
 					<p>登録する巻を入力してください</p>
-					<html:text property="volume" /><br>
+					<html:text property="volume" maxlength="255" /><br>
 					<p>※「[数字]-[数字]」 を入力することで、その間にある複数巻を登録できます<br>
 					　(例) 1-15　→ 1巻から15巻を登録</p>
 

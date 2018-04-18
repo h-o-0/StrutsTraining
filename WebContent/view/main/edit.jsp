@@ -27,12 +27,8 @@
 				<tr>
 					<td>タイトル</td>
 					<td>
-						<html:text property="title" styleClass="title" />
+						<html:text property="title" styleClass="title" maxlength="30" />
 					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><html:errors property="volume" /></td>
 				</tr>
 				<tr>
 					<td></td>
@@ -41,7 +37,7 @@
 				<tr>
 					<td>出版社</td>
 					<td>
-						<html:text property="publisher" styleClass="publisher" />
+						<html:text property="publisher" styleClass="publisher" maxlength="30" />
 					</td>
 				</tr>
 				<tr>
@@ -51,7 +47,7 @@
 				<tr>
 					<td>著者</td>
 					<td>
-						<html:text property="author" styleClass="author" />
+						<html:text property="author" styleClass="author" maxlength="30" />
 					</td>
 				</tr>
 			</table>
